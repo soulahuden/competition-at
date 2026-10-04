@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --space-950: #050816;
+  --space-700: #0b1b3f;
+  --accent-cyan: #22d3ee;
+  --accent-violet: #8b5cf6;
+  --accent-amber: #fbbf24;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-space-950 text-ink font-sans antialiased;
+    min-height: 100vh;
+    /* Nebula ungu/biru samar di atas gradient navy */
+    background-image:
+      radial-gradient(60rem 40rem at 78% -10%, rgba(139, 92, 246, 0.16), transparent 60%),
+      radial-gradient(52rem 34rem at 8% 12%, rgba(34, 211, 238, 0.1), transparent 62%),
+      radial-gradient(70rem 50rem at 50% 108%, rgba(91, 33, 182, 0.14), transparent 65%),
+      linear-gradient(180deg, #050816 0%, #070f2a 45%, #0b1b3f 100%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-white;
+  }
+
+  /* Fokus terlihat jelas untuk navigasi keyboard */
+  :focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: rgba(34, 211, 238, 0.3);
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  /* Glass tipis — cukup untuk memisahkan lapisan, tanpa mengaburkan teks */
+  .glass {
+    @apply rounded-xl2 border border-white/10 bg-white/[0.045] backdrop-blur-[6px] shadow-card;
+  }
+
+  .glass-strong {
+    @apply rounded-xl2 border border-white/15 bg-space-900/95 backdrop-blur-md shadow-card;
+  }
+
+  .hairline {
+    @apply border-b border-white/10;
+  }
+
+  .link-quiet {
+    @apply text-ink-muted underline-offset-4 transition-colors hover:text-white hover:underline;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ——— Layar intro: komet menggambar busur cahaya ——— */
+
+@keyframes comet-fall {
+  0% { transform: translate3d(-12vw, -32vh, 0) rotate(43deg); opacity: 0; }
+  12% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate3d(88vw, 118vh, 0) rotate(43deg); opacity: 0; }
+}
+
+/* Komet kecil yang jatuh melintas layar sebelum busur besar tergambar */
+.comet-fall {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(140px, 18vw, 260px);
+  height: 2px;
+  border-radius: 999px;
+  transform-origin: center;
+  background: linear-gradient(
+    90deg,
+    rgba(139, 92, 246, 0) 0%,
+    rgba(139, 92, 246, 0.45) 35%,
+    rgba(34, 211, 238, 0.85) 72%,
+    #ffffff 100%
+  );
+  box-shadow: 0 0 22px 3px rgba(34, 211, 238, 0.5);
+  animation: comet-fall 1.5s cubic-bezier(0.4, 0, 0.25, 1) 0.15s forwards;
+}
+
+@keyframes comet-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes comet-head-in {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes intro-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes intro-frame-in {
+  from { opacity: 0; transform: scale(1.03); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes intro-flash {
+  0% { opacity: 0; transform: scale(0.2); }
+  55% { opacity: 0.9; }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+
+.comet-draw {
+  animation: comet-draw 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.comet-head {
+  animation: comet-head-in 2.4s linear forwards;
+}
+
+/* Saat menekan "Let's Go": komet melesat keluar bingkai */
+.comet-arc-leaving {
+  animation: none;
+  transform: translate3d(14%, -10%, 0) scale(1.12);
+  opacity: 0;
+  transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1), opacity 720ms ease-in;
+}
+
+.intro-rise {
+  animation: intro-rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.intro-frame {
+  animation: intro-frame-in 1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.intro-leaving {
+  opacity: 0;
+  transform: translateY(-14px);
+  transition: opacity 420ms ease-in, transform 560ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.intro-flash {
+  animation: intro-flash 700ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+/* Hormati preferensi pengguna: matikan seluruh animasi dekoratif */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .comet-draw {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .comet-arc-leaving,
+  .intro-leaving {
+    transition: none !important;
+  }
+}
