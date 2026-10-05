@@ -78,55 +78,53 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <header className="glass relative overflow-hidden p-6 sm:p-8">
-        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-cyan/10 blur-3xl" />
-        <p className="text-sm text-ink-muted">Selamat datang kembali,</p>
-        <h1 className="mt-1 font-display text-2xl font-bold sm:text-3xl">{me.name} 👋</h1>
-        <p className="mt-2 max-w-2xl text-sm text-ink-muted">
-          {me.major} · Angkatan {me.cohort}. Ada {recruitments.length} slot tim terbuka dan{' '}
-          {competitions.filter((c) => c.status === 'mendatang').length} lomba yang pendaftarannya
-          masih dibuka.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-3">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-display text-2xl font-bold sm:text-3xl">Hi, {me.name.split(' ')[0]}</h1>
+          <p className="mt-1 text-sm text-ink-muted">
+            {me.major} · Class of {me.cohort}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-3">
           <LinkButton to="/lomba" size="sm">
-            Jelajahi lomba
+            Browse competitions
           </LinkButton>
           <LinkButton to="/cari-tim" variant="outline" size="sm">
-            Cari tim
+            Find a team
           </LinkButton>
         </div>
       </header>
 
-      <section aria-label="Ringkasan" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section aria-label="Summary" className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatCard
-          label="Posisi leaderboard"
-          value={rank ? `#${rank.rank}` : '—'}
-          sub={rank ? `dari ${rank.competitions} lomba semester ini` : 'Belum masuk peringkat'}
+          label="Leaderboard rank"
+          value={rank ? `#${rank.rank}` : 'Unranked'}
+          sub={rank ? `from ${rank.competitions} competitions this semester` : 'Not ranked yet'}
           icon={<Trophy size={16} />}
           tone="amber"
         />
         <StatCard
-          label="Poin semester ini"
+          label="Points this semester"
           value={formatNumber(rank?.totalPoints ?? 0)}
           sub={
             rank
-              ? `${formatNumber(rank.activityPoints)} keaktifan + ${formatNumber(rank.winPoints)} kemenangan`
-              : 'Ikut lomba lewat COM@T untuk mulai mengumpulkan poin'
+              ? `${formatNumber(rank.activityPoints)} activity + ${formatNumber(rank.winPoints)} wins`
+              : 'Join a competition on COM@T to start earning points'
           }
           icon={<Sparkles size={16} />}
           tone="cyan"
         />
         <StatCard
-          label="Skor reliabilitas"
-          value={view.hasEnoughData ? view.score : 'Belum cukup data'}
-          sub={view.hasEnoughData ? view.label : 'Butuh minimal 3 lomba'}
+          label="Reliability score"
+          value={view.hasEnoughData ? view.score : 'Not enough data'}
+          sub={view.hasEnoughData ? view.label : 'Needs at least 3 competitions'}
           icon={<ShieldCheck size={16} />}
           tone={view.hasEnoughData ? 'violet' : 'neutral'}
         />
         <StatCard
-          label="Tim aktif"
+          label="Active teams"
           value={activeTeams.length}
-          sub={`${myTeams.length} tim total`}
+          sub={`${myTeams.length} teams total`}
           icon={<Users size={16} />}
           tone="cyan"
         />
@@ -140,11 +138,11 @@ export default function DashboardPage() {
               className="glass flex flex-wrap items-center justify-between gap-3 border-amber/30 bg-amber/10 p-4"
             >
               <p className="text-sm text-amber-soft">
-                Kamu diundang ke tim <span className="font-semibold">{team.name}</span> dan belum
-                mengonfirmasi.
+                You were invited to <span className="font-semibold">{team.name}</span> and haven't
+                confirmed yet.
               </p>
               <Button size="sm" onClick={() => void confirmMember(team.id, currentUserId)}>
-                <UserCheck size={15} /> Konfirmasi sekarang
+                <UserCheck size={15} /> Confirm
               </Button>
             </div>
           ))}
@@ -154,11 +152,11 @@ export default function DashboardPage() {
               className="glass flex flex-wrap items-center justify-between gap-3 border-violet/30 bg-violet/10 p-4"
             >
               <p className="text-sm text-violet-soft">
-                Lomba tim <span className="font-semibold">{team.name}</span> sudah selesai. Peer
-                review menunggu diisi.
+                <span className="font-semibold">{team.name}</span> has finished competing. Your peer
+                review is waiting.
               </p>
               <LinkButton to="/tim" size="sm" variant="secondary">
-                <Star size={15} /> Beri peer review
+                <Star size={15} /> Write peer review
               </LinkButton>
             </div>
           ))}
@@ -167,21 +165,21 @@ export default function DashboardPage() {
 
       <section>
         <SectionTitle
-          title="Lomba yang cocok untukmu"
-          description={`Berdasarkan minat di profil: ${me.interests.join(', ')}.`}
+          title="Competitions for you"
+          description={`Based on your interests: ${me.interests.join(', ')}.`}
           action={
             <Link
               to="/lomba"
               className="inline-flex items-center gap-1.5 text-sm text-cyan-soft hover:text-white"
             >
-              Lihat semua <ArrowRight size={15} />
+              See all <ArrowRight size={15} />
             </Link>
           }
         />
         {recommended.length === 0 ? (
           <EmptyState
-            title="Belum ada rekomendasi"
-            description="Tambahkan minat kategori lomba di profilmu agar rekomendasi lebih tepat."
+            title="No suggestions yet"
+            description="Add your interests to your profile."
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -195,21 +193,20 @@ export default function DashboardPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         <section className="lg:col-span-2">
           <SectionTitle
-            title="Tim yang mencari skill-mu"
+            title="Teams looking for your skills"
             action={
               <Link
                 to="/cari-tim"
                 className="inline-flex items-center gap-1.5 text-sm text-cyan-soft hover:text-white"
               >
-                Semua lowongan <ArrowRight size={15} />
+                All open spots <ArrowRight size={15} />
               </Link>
             }
           />
           {matchingRecruitments.length === 0 ? (
             <EmptyState
               icon={<Users size={20} />}
-              title="Belum ada tim yang mencari skill-mu"
-              description="Coba periksa lagi nanti, atau buat timmu sendiri."
+              title="No teams need your skills right now"
             />
           ) : (
             <ul className="space-y-3">
@@ -218,7 +215,7 @@ export default function DashboardPage() {
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-white">{r.title}</p>
                     <p className="mt-1 text-xs text-ink-muted">
-                      Tim {r.teamName} · {r.commitment}
+                      {r.teamName} · {r.commitment}
                     </p>
                     <div className="mt-2.5 flex flex-wrap gap-1.5">
                       {r.skills.map((s) => (
@@ -227,12 +224,9 @@ export default function DashboardPage() {
                         </Badge>
                       ))}
                     </div>
-                    <p className="mt-2 text-xs text-cyan-soft">
-                      {matched.length} skill-mu cocok dengan kebutuhan tim ini
-                    </p>
                   </div>
                   <LinkButton to="/cari-tim" size="sm" variant="outline">
-                    Lihat & lamar
+                    View and apply
                   </LinkButton>
                 </li>
               ))}
@@ -242,14 +236,14 @@ export default function DashboardPage() {
 
         <div className="space-y-6">
           <section>
-            <SectionTitle title="Status tim saya" />
+            <SectionTitle title="My teams" />
             {activeTeams.length === 0 ? (
               <EmptyState
                 icon={<Users size={20} />}
-                title="Belum ada tim aktif"
+                title="No active teams"
                 action={
                   <LinkButton to="/tim" size="sm">
-                    Buat tim
+                    Create a team
                   </LinkButton>
                 }
               />
@@ -284,9 +278,9 @@ export default function DashboardPage() {
                       </div>
                       <p className="mt-2.5 text-xs text-ink-faint">
                         {unconfirmed > 0
-                          ? `${unconfirmed} anggota belum konfirmasi`
-                          : 'Semua anggota sudah konfirmasi'}{' '}
-                        · Roster dikunci {formatDate(team.rosterLockDate)}
+                          ? `${unconfirmed} not confirmed yet`
+                          : 'Everyone confirmed'}{' '}
+                        · Roster locks {formatDate(team.rosterLockDate)}
                       </p>
                     </li>
                   );
@@ -296,9 +290,9 @@ export default function DashboardPage() {
           </section>
 
           <section>
-            <SectionTitle title="Notifikasi terbaru" />
+            <SectionTitle title="Recent notifications" />
             {notifications.length === 0 ? (
-              <EmptyState icon={<Bell size={20} />} title="Belum ada notifikasi" />
+              <EmptyState icon={<Bell size={20} />} title="No notifications yet" />
             ) : (
               <ul className="glass divide-y divide-white/5 overflow-hidden">
                 {notifications.slice(0, 5).map((n) => (

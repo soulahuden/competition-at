@@ -32,7 +32,7 @@ export function ReliabilityScore({ student, size = 'sm', showLabel = true }: Rel
             toneClass[view.tone],
           )}
         >
-          {view.hasEnoughData ? `${view.score}` : 'Belum cukup data'}
+          {view.hasEnoughData ? `${view.score}` : 'Not enough data'}
         </span>
         {view.hasEnoughData && showLabel && (
           <span className="ml-1.5 text-xs text-ink-muted">{view.label}</span>

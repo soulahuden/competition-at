@@ -70,18 +70,17 @@ export default function FindTeamPage() {
   const myCaptainTeams = teams.filter((t) => t.captainId === currentUserId);
 
   const tabs: TabItem<TabValue>[] = [
-    { value: 'lowongan', label: 'Open Recruitment', count: filtered.length },
-    { value: 'orang', label: 'Rekomendasi Orang', count: people.length },
+    { value: 'lowongan', label: 'Open spots', count: filtered.length },
+    { value: 'orang', label: 'Suggested people', count: people.length },
   ];
 
   return (
     <div className="space-y-6">
       <SectionTitle
-        title="Cari Tim"
-        description="Lamar slot kosong tim lain, atau undang mahasiswa yang cocok ke timmu."
+        title="Find a Team"
       />
 
-      <Tabs items={tabs} value={tab} onChange={setTab} ariaLabel="Mode pencarian" />
+      <Tabs items={tabs} value={tab} onChange={setTab} ariaLabel="Search mode" />
 
       {tab === 'lowongan' && (
         <>
@@ -91,7 +90,7 @@ export default function FindTeamPage() {
                 htmlFor="cari-role"
                 className="mb-1 block text-xs font-medium uppercase tracking-wide text-ink-faint"
               >
-                Role / skill
+                Role or skill
               </label>
               <div className="relative">
                 <Search
@@ -102,18 +101,18 @@ export default function FindTeamPage() {
                   id="cari-role"
                   value={roleQuery}
                   onChange={(e) => setRoleQuery(e.target.value)}
-                  placeholder="Contoh: Frontend, Figma, Python"
+                  placeholder="e.g. Frontend, Figma, Python"
                   className="w-full rounded-lg border border-white/15 bg-space-900/70 py-2 pl-9 pr-3 text-sm text-ink placeholder:text-ink-faint focus:border-cyan/60 focus:outline-none focus:ring-2 focus:ring-cyan/30"
                 />
               </div>
             </div>
 
             <FilterSelect
-              label="Kategori lomba"
+              label="Category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="semua">Semua kategori</option>
+              <option value="semua">All categories</option>
               {categories.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -126,9 +125,9 @@ export default function FindTeamPage() {
               value={deadlineFilter}
               onChange={(e) => setDeadlineFilter(e.target.value as 'semua' | '7' | '30')}
             >
-              <option value="semua">Kapan saja</option>
-              <option value="7">7 hari ke depan</option>
-              <option value="30">30 hari ke depan</option>
+              <option value="semua">Any time</option>
+              <option value="7">Next 7 days</option>
+              <option value="30">Next 30 days</option>
             </FilterSelect>
           </div>
 
@@ -141,8 +140,7 @@ export default function FindTeamPage() {
           ) : filtered.length === 0 ? (
             <EmptyState
               icon={<Users size={22} />}
-              title="Belum ada open recruitment yang cocok"
-              description="Coba ubah filter, atau buat timmu sendiri dan buka slot."
+              title="No open spots match"
             />
           ) : (
             <ul className="space-y-3">
@@ -180,16 +178,16 @@ export default function FindTeamPage() {
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Users size={14} className="text-cyan-soft" />
-                            <dt className="sr-only">Anggota</dt>
+                            <dt className="sr-only">Members</dt>
                             <dd>
-                              {r.memberCount}/{r.teamSizeMax} anggota · Tim {r.teamName}
+                              {r.memberCount}/{r.teamSizeMax} members · {r.teamName}
                             </dd>
                           </div>
                         </dl>
 
                         <p className="mt-2 text-sm text-ink-muted">{r.commitment}</p>
                         <p className="mt-2 text-xs text-ink-faint">
-                          Kapten:{' '}
+                          Captain:{' '}
                           <Link to={`/profil/${r.captainId}`} className="link-quiet">
                             {r.captainName}
                           </Link>
@@ -202,11 +200,11 @@ export default function FindTeamPage() {
                             tone={applicationStatus === 'ditolak' ? 'danger' : 'success'}
                             icon={<CheckCircle2 size={13} />}
                           >
-                            {applicationStatus === 'ditolak' ? 'Lamaran ditolak' : 'Lamaran terkirim'}
+                            {applicationStatus === 'ditolak' ? 'Not accepted' : 'Applied'}
                           </Badge>
                         ) : (
                           <Button size="sm" onClick={() => setApplyTarget(r)}>
-                            <Send size={15} /> Lamar
+                            <Send size={15} /> Apply
                           </Button>
                         )}
                       </div>
@@ -222,15 +220,14 @@ export default function FindTeamPage() {
       {tab === 'orang' && (
         <>
           <p className="text-sm text-ink-muted">
-            Diurutkan dari kecocokan skill dengan slot kosong timmu, koneksi rekan setim, dan
-            kesamaan minat lomba.
+            Sorted by how well their skills match your open slots.
           </p>
 
           {people.length === 0 ? (
             <EmptyState
               icon={<UserPlus size={22} />}
-              title="Belum ada rekomendasi"
-              description="Buat tim dan buka slot agar COM@T bisa mencocokkan kandidat untukmu."
+              title="No suggestions yet"
+              description="Create a team and add an open slot first."
             />
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -246,14 +243,14 @@ export default function FindTeamPage() {
                         {student.name}
                       </Link>
                       <p className="text-xs text-ink-muted">
-                        {student.major} · Angkatan {student.cohort}
+                        {student.major} · Class of {student.cohort}
                       </p>
                     </div>
                   </div>
 
                   {student.lookingForTeam && (
                     <div className="mt-3">
-                      <Badge tone="success">Sedang mencari tim</Badge>
+                      <Badge tone="success">Looking for a team</Badge>
                     </div>
                   )}
 
@@ -267,13 +264,13 @@ export default function FindTeamPage() {
 
                   <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-xs">
                     <div>
-                      <dt className="text-ink-faint">Skor reliabilitas</dt>
+                      <dt className="text-ink-faint">Reliability</dt>
                       <dd className="mt-1">
                         <ReliabilityScore student={student} showLabel={false} />
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-ink-faint">Lomba diikuti</dt>
+                      <dt className="text-ink-faint">Competitions</dt>
                       <dd className="mt-1 font-display text-sm font-semibold text-ink">
                         {student.competitionsJoined}
                       </dd>
@@ -293,7 +290,7 @@ export default function FindTeamPage() {
                     fullWidth
                     onClick={() => setInviteTarget({ student, matchedSkills, connectionNote, mutualCount: 0 })}
                   >
-                    <UserPlus size={15} /> Undang ke tim
+                    <UserPlus size={15} /> Invite to team
                   </Button>
                 </article>
               ))}
@@ -328,20 +325,19 @@ interface InviteModalProps {
 
 function InviteModal({ person, teams, onClose, onInvite }: InviteModalProps) {
   const [teamId, setTeamId] = useState(teams[0]?.id ?? '');
-  const [role, setRole] = useState(person.student.skills[0] ?? 'Anggota');
+  const [role, setRole] = useState(person.student.skills[0] ?? 'Member');
   const [submitting, setSubmitting] = useState(false);
 
   return (
     <Modal
       open
       onClose={onClose}
-      title={`Undang ${person.student.name}`}
-      description="Undangan akan muncul di notifikasi mahasiswa tersebut."
+      title={`Invite ${person.student.name}`}
       size="sm"
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>
-            Batal
+            Cancel
           </Button>
           <Button
             disabled={!teamId || submitting}
@@ -351,19 +347,18 @@ function InviteModal({ person, teams, onClose, onInvite }: InviteModalProps) {
               setSubmitting(false);
             }}
           >
-            {submitting ? 'Mengirim…' : 'Kirim undangan'}
+            {submitting ? 'Sending…' : 'Send invite'}
           </Button>
         </>
       }
     >
       {teams.length === 0 ? (
         <p className="text-sm text-ink-muted">
-          Kamu belum jadi kapten tim mana pun. Buat tim dulu di halaman Tim Saya untuk bisa
-          mengundang anggota.
+          You're not captain of any team yet. Create one in My Teams first.
         </p>
       ) : (
         <div className="space-y-4">
-          <SelectField label="Pilih tim" value={teamId} onChange={(e) => setTeamId(e.target.value)}>
+          <SelectField label="Team" value={teamId} onChange={(e) => setTeamId(e.target.value)}>
             {teams.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.name}
@@ -371,7 +366,7 @@ function InviteModal({ person, teams, onClose, onInvite }: InviteModalProps) {
             ))}
           </SelectField>
           <TextField
-            label="Peran yang ditawarkan"
+            label="Role offered"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           />

@@ -28,7 +28,7 @@ interface DraftSlot {
   note: string;
 }
 
-const BASE_STEPS = ['Pilih lomba', 'Nama tim & anggota', 'Slot kosong'];
+const BASE_STEPS = ['Competition', 'Team and members', 'Open slots'];
 
 export function CreateTeamWizard({
   open,
@@ -54,7 +54,7 @@ export function CreateTeamWizard({
   const openCompetitions = competitions.filter((c) => c.status === 'mendatang');
   const competition: Competition | undefined = competitions.find((c) => c.id === competitionId);
   const isPaid = (competition?.fee ?? 0) > 0;
-  const steps = isPaid ? [...BASE_STEPS, 'Pembayaran'] : BASE_STEPS;
+  const steps = isPaid ? [...BASE_STEPS, 'Payment'] : BASE_STEPS;
 
   const candidates = useMemo(() => {
     const q = memberQuery.trim().toLowerCase();
@@ -104,7 +104,7 @@ export function CreateTeamWizard({
       name: teamName.trim(),
       competitionId: competition.id,
       captainId: currentUserId,
-      captainRole: captainRole.trim() || 'Kapten',
+      captainRole: captainRole.trim() || 'Captain',
       invitedIds: invited,
       openSlots: slots.map((s) => ({ role: s.role, skills: s.skills, note: s.note })),
     });
@@ -126,11 +126,11 @@ export function CreateTeamWizard({
     <Modal
       open={open}
       onClose={handleClose}
-      title="Buat Tim"
+      title="Create a team"
       description={
         step === 3
-          ? 'Selesaikan pembayaran pendaftaran untuk mengunci slot tim.'
-          : `Langkah ${step + 1} dari ${steps.length}`
+          ? 'Pay the registration fee to lock in your team.'
+          : `Step ${step + 1} of ${steps.length}`
       }
       size="lg"
       footer={
@@ -138,16 +138,16 @@ export function CreateTeamWizard({
           <>
             {step > 0 && (
               <Button variant="ghost" onClick={() => setStep((s) => s - 1)}>
-                Kembali
+                Back
               </Button>
             )}
             {step < 2 ? (
               <Button onClick={() => setStep((s) => s + 1)} disabled={!canContinue}>
-                Lanjut
+                Next
               </Button>
             ) : (
               <Button onClick={() => void submitTeam()} disabled={submitting}>
-                {submitting ? 'Membuat tim…' : isPaid ? 'Lanjut ke pembayaran' : 'Buat tim'}
+                {submitting ? 'Creating team…' : isPaid ? 'Continue to payment' : 'Create team'}
               </Button>
             )}
           </>
@@ -160,8 +160,7 @@ export function CreateTeamWizard({
         {step === 0 && (
           <div className="space-y-3">
             <p className="text-sm text-ink-muted">
-              Pilih lomba yang pendaftarannya masih terbuka. Poin keaktifan hanya dihitung jika tim
-              didaftarkan lewat COM@T sebelum lomba dimulai.
+              Activity points only count if you register before the competition starts.
             </p>
             <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
               {openCompetitions.map((c) => {
@@ -192,7 +191,7 @@ export function CreateTeamWizard({
                         <Badge tone="outline">{deadlineLabel(c.registrationDeadline)}</Badge>
                         <Badge tone={c.fee > 0 ? 'amber' : 'success'}>{formatRupiah(c.fee)}</Badge>
                         <Badge tone="outline">
-                          {c.teamSizeMin}–{c.teamSizeMax} orang
+                          {c.teamSizeMin}-{c.teamSizeMax} people
                         </Badge>
                       </span>
                     </span>
@@ -208,15 +207,15 @@ export function CreateTeamWizard({
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <TextField
-                label="Nama tim"
+                label="Team name"
                 required
-                placeholder="Contoh: NullByte"
+                placeholder="e.g. NullByte"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
               />
               <TextField
-                label="Peranmu di tim"
-                placeholder="Contoh: Web Exploitation"
+                label="Your role"
+                placeholder="e.g. Web Exploitation"
                 list="role-suggestions"
                 value={captainRole}
                 onChange={(e) => setCaptainRole(e.target.value)}
@@ -229,7 +228,7 @@ export function CreateTeamWizard({
             </div>
 
             <div>
-              <p className="mb-2 text-sm font-medium text-ink">Undang anggota</p>
+              <p className="mb-2 text-sm font-medium text-ink">Invite members</p>
               {invited.length > 0 && (
                 <ul className="mb-3 space-y-2">
                   {invited.map((inv) => {
@@ -246,7 +245,7 @@ export function CreateTeamWizard({
                           <p className="text-xs text-ink-muted">{s.major}</p>
                         </div>
                         <input
-                          aria-label={`Peran untuk ${s.name}`}
+                          aria-label={`Role for ${s.name}`}
                           value={inv.role}
                           onChange={(e) =>
                             setInvited((list) =>
@@ -255,14 +254,14 @@ export function CreateTeamWizard({
                               ),
                             )
                           }
-                          placeholder="Peran"
+                          placeholder="Role"
                           className="w-36 rounded-lg border border-white/15 bg-space-900/70 px-2.5 py-1.5 text-xs text-ink placeholder:text-ink-faint focus:border-cyan/60 focus:outline-none"
                         />
                         <button
                           onClick={() =>
                             setInvited((list) => list.filter((i) => i.studentId !== inv.studentId))
                           }
-                          aria-label={`Hapus ${s.name}`}
+                          aria-label={`Remove ${s.name}`}
                           className="rounded-lg p-1.5 text-ink-muted transition hover:bg-white/10 hover:text-white"
                         >
                           <X size={15} />
@@ -281,8 +280,8 @@ export function CreateTeamWizard({
                 <input
                   value={memberQuery}
                   onChange={(e) => setMemberQuery(e.target.value)}
-                  placeholder="Cari nama, jurusan, atau skill"
-                  aria-label="Cari mahasiswa untuk diundang"
+                  placeholder="Search by name, major, or skill"
+                  aria-label="Search students to invite"
                   className="w-full rounded-lg border border-white/15 bg-space-900/70 py-2 pl-9 pr-3 text-sm text-ink placeholder:text-ink-faint focus:border-cyan/60 focus:outline-none focus:ring-2 focus:ring-cyan/30"
                 />
               </div>
@@ -294,7 +293,7 @@ export function CreateTeamWizard({
                       onClick={() =>
                         setInvited((list) => [
                           ...list,
-                          { studentId: s.id, role: s.skills[0] ?? 'Anggota' },
+                          { studentId: s.id, role: s.skills[0] ?? 'Member' },
                         ])
                       }
                       className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 text-left transition hover:border-cyan/40"
@@ -312,7 +311,7 @@ export function CreateTeamWizard({
                 ))}
               </ul>
               <p className="mt-2 text-xs text-ink-faint">
-                Anggota yang diundang berstatus "belum konfirmasi" sampai mereka menyetujui.
+                Invited members stay unconfirmed until they accept.
               </p>
             </div>
           </div>
@@ -321,8 +320,7 @@ export function CreateTeamWizard({
         {step === 2 && (
           <div className="space-y-4">
             <p className="text-sm text-ink-muted">
-              Tandai slot yang masih kosong. Slot ini otomatis tayang sebagai open recruitment di
-              halaman Cari Tim.
+              Add the roles you still need. They show up on Find a Team right away.
             </p>
 
             {slots.length > 0 && (
@@ -347,7 +345,7 @@ export function CreateTeamWizard({
                     </div>
                     <button
                       onClick={() => setSlots((list) => list.filter((_, idx) => idx !== i))}
-                      aria-label={`Hapus slot ${slot.role}`}
+                      aria-label={`Remove ${slot.role} slot`}
                       className="rounded-lg p-1.5 text-ink-muted transition hover:bg-white/10 hover:text-white"
                     >
                       <Trash2 size={15} />
@@ -359,8 +357,8 @@ export function CreateTeamWizard({
 
             <div className="space-y-3 rounded-xl border border-dashed border-white/20 p-4">
               <TextField
-                label="Role yang dibutuhkan"
-                placeholder="Contoh: Cryptography Specialist"
+                label="Role needed"
+                placeholder="e.g. Cryptography Specialist"
                 list="role-suggestions"
                 value={slotDraft.role}
                 onChange={(e) => setSlotDraft((d) => ({ ...d, role: e.target.value }))}
@@ -371,7 +369,7 @@ export function CreateTeamWizard({
                   htmlFor="skill-draft"
                   className="mb-1.5 block text-sm font-medium text-ink"
                 >
-                  Skill yang dicari
+                  Skills wanted
                 </label>
                 {slotDraft.skills.length > 0 && (
                   <div className="mb-2 flex flex-wrap gap-1.5">
@@ -399,32 +397,32 @@ export function CreateTeamWizard({
                         addSkillToDraft();
                       }
                     }}
-                    placeholder="Ketik skill lalu Enter"
+                    placeholder="Type a skill and press Enter"
                     className="flex-1 rounded-lg border border-white/15 bg-space-900/70 px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-cyan/60 focus:outline-none focus:ring-2 focus:ring-cyan/30"
                   />
                   <Button variant="outline" size="sm" onClick={addSkillToDraft}>
-                    Tambah
+                    Add
                   </Button>
                 </div>
               </div>
 
               <TextField
-                label="Catatan komitmen"
-                placeholder="Contoh: Komitmen 3 minggu, rapat 2x seminggu"
+                label="Commitment"
+                placeholder="e.g. 3 weeks, meeting twice a week"
                 value={slotDraft.note}
                 onChange={(e) => setSlotDraft((d) => ({ ...d, note: e.target.value }))}
               />
 
               <Button variant="outline" size="sm" onClick={addSlot} disabled={!slotDraft.role.trim()}>
-                <Plus size={15} /> Tambah slot
+                <Plus size={15} /> Add slot
               </Button>
             </div>
 
             {competition && (
               <p className="rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-ink-muted">
-                Roster akan dikunci pada{' '}
+                The roster locks on{' '}
                 <span className="text-white">{formatDate(competition.registrationDeadline)}</span>.
-                Setelah itu anggota tidak bisa ditambah atau diganti.
+                After that, members can't be added or swapped.
               </p>
             )}
           </div>

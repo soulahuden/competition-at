@@ -21,9 +21,9 @@ import NotFoundPage from './NotFoundPage';
 import type { HistoryRecord, PortfolioItem } from '@/types';
 
 const verificationLabel = {
-  penyelenggara: 'Terverifikasi (penyelenggara)',
-  tim: 'Terverifikasi (konfirmasi tim)',
-  menunggu: 'Menunggu verifikasi',
+  penyelenggara: 'Verified by organizer',
+  tim: 'Verified by team',
+  menunggu: 'Pending verification',
 } as const;
 
 const verificationTone: Record<keyof typeof verificationLabel, BadgeTone> = {
@@ -33,10 +33,10 @@ const verificationTone: Record<keyof typeof verificationLabel, BadgeTone> = {
 };
 
 const outcomeTone = (outcome: HistoryRecord['outcome']): BadgeTone => {
-  if (outcome === 'Juara 1') return 'amber';
-  if (outcome === 'Juara 2' || outcome === 'Juara 3') return 'violet';
-  if (outcome === 'Finalis') return 'cyan';
-  if (outcome === 'Mundur') return 'danger';
+  if (outcome === '1st place') return 'amber';
+  if (outcome === '2nd place' || outcome === '3rd place') return 'violet';
+  if (outcome === 'Finalist') return 'cyan';
+  if (outcome === 'Withdrew') return 'danger';
   return 'outline';
 };
 
@@ -68,13 +68,13 @@ export default function ProfilePage() {
       {!student.claimed && (
         <div className="glass flex flex-wrap items-center justify-between gap-4 border-amber/30 bg-amber/10 p-5">
           <div>
-            <p className="font-display font-semibold text-amber-soft">Ini kamu? Klaim profil ini</p>
+            <p className="font-display font-semibold text-amber-soft">Is this you? Claim this profile</p>
             <p className="mt-1 text-sm text-ink-muted">
-              Profil ini dibuat otomatis dari arsip prestasi kampus dan belum diklaim pemiliknya.
+              Built from campus achievement records. Nobody has claimed it yet.
             </p>
           </div>
           <Button variant="secondary" onClick={() => void claimProfile(student.id)}>
-            <UserCheck size={16} /> Klaim profil
+            <UserCheck size={16} /> Claim profile
           </Button>
         </div>
       )}
@@ -85,14 +85,14 @@ export default function ProfilePage() {
           <div className="min-w-0 flex-1">
             <h1 className="font-display text-2xl font-bold sm:text-3xl">{student.name}</h1>
             <p className="mt-1 text-ink-muted">
-              {student.major} · Angkatan {student.cohort}
+              {student.major} · Class of {student.cohort}
             </p>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">{student.bio}</p>
 
             <div className="mt-4 flex flex-wrap items-center gap-3">
               {isMe ? (
                 <label className="inline-flex cursor-pointer items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-3.5 py-2">
-                  <span className="text-sm text-ink">Sedang mencari tim</span>
+                  <span className="text-sm text-ink">Looking for a team</span>
                   <input
                     type="checkbox"
                     checked={student.lookingForTeam}
@@ -114,11 +114,11 @@ export default function ProfilePage() {
                 </label>
               ) : (
                 <Badge tone={student.lookingForTeam ? 'success' : 'outline'}>
-                  {student.lookingForTeam ? 'Sedang mencari tim' : 'Tidak sedang mencari tim'}
+                  {student.lookingForTeam ? 'Looking for a team' : 'Not looking for a team'}
                 </Badge>
               )}
               {activeTeams.length > 0 && (
-                <Badge tone="violet">{activeTeams.length} tim aktif</Badge>
+                <Badge tone="violet">{activeTeams.length} active {activeTeams.length === 1 ? 'team' : 'teams'}</Badge>
               )}
             </div>
           </div>
@@ -127,41 +127,41 @@ export default function ProfilePage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Total poin"
+          label="Total points"
           value={formatNumber(student.activityPoints + student.winPoints)}
-          sub={`${formatNumber(student.activityPoints)} keaktifan + ${formatNumber(student.winPoints)} kemenangan`}
+          sub={`${formatNumber(student.activityPoints)} activity + ${formatNumber(student.winPoints)} wins`}
           tone="amber"
         />
-        <StatCard label="Lomba diikuti" value={student.competitionsJoined} tone="cyan" />
+        <StatCard label="Competitions" value={student.competitionsJoined} tone="cyan" />
         <StatCard
-          label="Skor reliabilitas"
+          label="Reliability score"
           value={
             view.hasEnoughData ? (
               <ReliabilityScore student={student} size="lg" showLabel={false} />
             ) : (
-              <span className="text-base text-ink-faint">Belum cukup data</span>
+              <span className="text-base text-ink-faint">Not enough data</span>
             )
           }
           sub={
             view.hasEnoughData
               ? view.label
-              : `Butuh minimal ${MIN_COMPETITIONS_FOR_SCORE} lomba untuk menampilkan skor`
+              : `Shows after ${MIN_COMPETITIONS_FOR_SCORE} competitions`
           }
           icon={!view.hasEnoughData ? <ShieldQuestion size={16} /> : undefined}
         />
-        <StatCard label="Prestasi tercatat" value={student.achievements.length} tone="violet" />
+        <StatCard label="Achievements" value={student.achievements.length} tone="violet" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <section className="glass p-5">
-            <h2 className="font-display text-lg font-semibold">Riwayat lomba</h2>
+            <h2 className="font-display text-lg font-semibold">Competition history</h2>
             <p className="mt-1 text-sm text-ink-muted">
-              Termasuk lomba yang kalah atau ditinggalkan — rekam jejak ditampilkan apa adanya.
+              Losses and withdrawals included.
             </p>
             {student.history.length === 0 ? (
               <div className="mt-4">
-                <EmptyState title="Belum ada riwayat lomba" />
+                <EmptyState title="No competitions yet" />
               </div>
             ) : (
               <ul className="mt-4 space-y-2">
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                     <div className="min-w-0">
                       <p className="font-medium text-white">{h.competitionName}</p>
                       <p className="mt-0.5 text-xs text-ink-muted">
-                        Tim {h.teamName} · {h.year}
+                        {h.teamName} · {h.year}
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
@@ -190,10 +190,10 @@ export default function ProfilePage() {
           </section>
 
           <section className="glass p-5">
-            <h2 className="font-display text-lg font-semibold">Prestasi</h2>
+            <h2 className="font-display text-lg font-semibold">Achievements</h2>
             {student.achievements.length === 0 ? (
               <div className="mt-4">
-                <EmptyState title="Belum ada prestasi tercatat" />
+                <EmptyState title="No achievements yet" />
               </div>
             ) : (
               <ul className="mt-4 space-y-2">
@@ -239,7 +239,7 @@ export default function ProfilePage() {
             </div>
 
             <h3 className="mt-5 text-sm font-medium uppercase tracking-wide text-ink-faint">
-              Minat kategori lomba
+              Interests
             </h3>
             <div className="mt-2 flex flex-wrap gap-2">
               {student.interests.map((i) => (
@@ -253,7 +253,7 @@ export default function ProfilePage() {
           <section className="glass p-5">
             <h2 className="font-display text-lg font-semibold">Portfolio</h2>
             {student.portfolio.length === 0 ? (
-              <p className="mt-3 text-sm text-ink-muted">Belum ada portfolio yang ditautkan.</p>
+              <p className="mt-3 text-sm text-ink-muted">No portfolio links yet.</p>
             ) : (
               <ul className="mt-3 space-y-2">
                 {student.portfolio.map((p) => (
@@ -276,13 +276,13 @@ export default function ProfilePage() {
 
           {activeTeams.length > 0 && (
             <section className="glass p-5">
-              <h2 className="font-display text-lg font-semibold">Tim aktif</h2>
+              <h2 className="font-display text-lg font-semibold">Active teams</h2>
               <ul className="mt-3 space-y-2">
                 {activeTeams.map((t) => (
                   <li key={t.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
                     <p className="text-sm font-medium text-white">{t.name}</p>
                     <Link to="/tim" className="mt-1 inline-block text-xs text-cyan-soft">
-                      Lihat detail tim
+                      View team
                     </Link>
                   </li>
                 ))}

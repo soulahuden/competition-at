@@ -54,44 +54,43 @@ export default function LeaderboardPage() {
     <div className="space-y-6">
       <SectionTitle
         title="Leaderboard"
-        description="Peringkat mahasiswa berdasarkan poin keaktifan dan poin kemenangan."
         action={
           <span className="inline-flex items-center gap-2 text-sm text-ink-muted">
-            Cara poin dihitung
-            <Tooltip content={POINT_RULES_TOOLTIP} label="Penjelasan perhitungan poin" />
+            How points work
+            <Tooltip content={POINT_RULES_TOOLTIP} label="How points are calculated" />
           </span>
         }
       />
 
       <div className="glass flex flex-wrap items-end gap-3 p-4">
         <FilterSelect
-          label="Periode"
+          label="Period"
           value={period}
           onChange={(e) => setPeriod(e.target.value as LeaderboardPeriod)}
         >
-          <option value="semester">Semester ini</option>
-          <option value="tahun">Tahun akademik ini</option>
+          <option value="semester">This semester</option>
+          <option value="tahun">This academic year</option>
         </FilterSelect>
 
         <FilterSelect
-          label="Angkatan"
+          label="Class of"
           value={String(cohort)}
           onChange={(e) => setCohort(e.target.value === 'semua' ? 'semua' : Number(e.target.value))}
         >
-          <option value="semua">Semua angkatan</option>
+          <option value="semua">All years</option>
           {cohortOptions.map((c) => (
             <option key={c} value={c}>
-              Angkatan {c}
+              Class of {c}
             </option>
           ))}
         </FilterSelect>
 
         <FilterSelect
-          label="Kategori lomba"
+          label="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value as CompetitionCategory | 'semua')}
         >
-          <option value="semua">Semua kategori</option>
+          <option value="semua">All categories</option>
           {categories.map((c) => (
             <option key={c} value={c}>
               {c}
@@ -105,12 +104,11 @@ export default function LeaderboardPage() {
       ) : entries.length === 0 ? (
         <EmptyState
           icon={<Trophy size={22} />}
-          title="Belum ada data peringkat"
-          description="Coba ganti filter periode, angkatan, atau kategori lomba."
+          title="No rankings yet"
         />
       ) : (
         <>
-          <section aria-label="Tiga besar" className="grid gap-4 sm:grid-cols-3 sm:items-end">
+          <section aria-label="Top three" className="grid gap-4 sm:grid-cols-3 sm:items-end">
             {podium.map((entry, i) => {
               const style = podiumStyle[i];
               const isMe = entry.student.id === currentUserId;
@@ -141,32 +139,32 @@ export default function LeaderboardPage() {
                     {formatNumber(entry.totalPoints)}
                   </p>
                   <p className="text-xs text-ink-faint">
-                    {formatNumber(entry.activityPoints)} keaktifan +{' '}
-                    {formatNumber(entry.winPoints)} kemenangan
+                    {formatNumber(entry.activityPoints)} activity +{' '}
+                    {formatNumber(entry.winPoints)} wins
                   </p>
-                  {isMe && <Badge tone="cyan">Kamu</Badge>}
+                  {isMe && <Badge tone="cyan">You</Badge>}
                 </div>
               );
             })}
           </section>
 
-          <section className="glass overflow-hidden" aria-label="Tabel peringkat">
+          <section className="glass overflow-hidden" aria-label="Rankings">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[46rem] text-left text-sm">
                 <thead>
                   <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-ink-faint">
                     <th scope="col" className="px-5 py-3 font-medium">#</th>
-                    <th scope="col" className="px-5 py-3 font-medium">Nama</th>
-                    <th scope="col" className="px-5 py-3 font-medium">Angkatan</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Name</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Class of</th>
                     <th scope="col" className="px-5 py-3 font-medium">
                       <span className="inline-flex items-center gap-1.5">
-                        Total poin
-                        <Tooltip content={POINT_RULES_TOOLTIP} label="Penjelasan total poin" />
+                        Total points
+                        <Tooltip content={POINT_RULES_TOOLTIP} label="How total points work" />
                       </span>
                     </th>
-                    <th scope="col" className="px-5 py-3 font-medium">Keaktifan</th>
-                    <th scope="col" className="px-5 py-3 font-medium">Kemenangan</th>
-                    <th scope="col" className="px-5 py-3 font-medium">Lomba</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Activity</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Wins</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Competitions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -195,7 +193,7 @@ export default function LeaderboardPage() {
                               </Link>
                               <p className="text-xs text-ink-faint">{entry.student.major}</p>
                             </div>
-                            {isMe && <Badge tone="cyan">Kamu</Badge>}
+                            {isMe && <Badge tone="cyan">You</Badge>}
                           </div>
                         </td>
                         <td className="px-5 py-3 text-ink-muted">{entry.student.cohort}</td>
@@ -218,15 +216,10 @@ export default function LeaderboardPage() {
 
             {rest.length === 0 && (
               <p className="px-5 py-6 text-center text-sm text-ink-muted">
-                Hanya ada tiga peserta pada filter ini.
+                Only three people match these filters.
               </p>
             )}
           </section>
-
-          <p className="text-xs text-ink-faint">
-            Poin hanya didapat dari lomba yang didaftarkan lewat COM@T sebelum lomba dimulai. Bobot
-            poin mengikuti tier lomba: Internal ×1, Regional ×2, Nasional ×3, Internasional ×4.
-          </p>
         </>
       )}
     </div>

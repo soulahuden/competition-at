@@ -22,10 +22,10 @@ import { deadlineLabel, formatDate, formatRupiah } from '@/lib/format';
 import NotFoundPage from './NotFoundPage';
 
 const rankLabel: Record<number, string> = {
-  1: 'Juara 1',
-  2: 'Juara 2',
-  3: 'Juara 3',
-  0: 'Finalis',
+  1: '1st place',
+  2: '2nd place',
+  3: '3rd place',
+  0: 'Finalist',
 };
 
 const rankTone = (rank: number) =>
@@ -55,7 +55,7 @@ export default function CompetitionDetailPage() {
         to="/lomba"
         className="inline-flex items-center gap-2 text-sm text-ink-muted transition hover:text-white"
       >
-        <ArrowLeft size={16} /> Kembali ke daftar lomba
+        <ArrowLeft size={16} /> All competitions
       </Link>
 
       <header className="glass overflow-hidden">
@@ -94,7 +94,7 @@ export default function CompetitionDetailPage() {
             <div className="flex flex-col gap-2">
               {myTeam ? (
                 <LinkButton to="/tim" variant="outline">
-                  <Users size={16} /> Tim kamu: {myTeam.name}
+                  <Users size={16} /> Your team: {myTeam.name}
                 </LinkButton>
               ) : (
                 <Button
@@ -104,7 +104,7 @@ export default function CompetitionDetailPage() {
                   }
                 >
                   <UserPlus size={16} />
-                  {registrationClosed ? 'Pendaftaran ditutup' : 'Daftarkan Tim'}
+                  {registrationClosed ? 'Registration closed' : 'Register a team'}
                 </Button>
               )}
               <p className="text-right text-xs text-ink-faint">
@@ -116,29 +116,29 @@ export default function CompetitionDetailPage() {
           <dl className="mt-6 grid gap-4 border-t border-white/10 pt-5 sm:grid-cols-4">
             <div>
               <dt className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-ink-faint">
-                <CalendarClock size={13} /> Pelaksanaan
+                <CalendarClock size={13} /> Dates
               </dt>
               <dd className="mt-1 text-sm text-ink">
-                {formatDate(competition.startDate)} – {formatDate(competition.endDate)}
+                {formatDate(competition.startDate)} to {formatDate(competition.endDate)}
               </dd>
             </div>
             <div>
               <dt className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-ink-faint">
-                <Users size={13} /> Ukuran tim
+                <Users size={13} /> Team size
               </dt>
               <dd className="mt-1 text-sm text-ink">
-                {competition.teamSizeMin}–{competition.teamSizeMax} orang
+                {competition.teamSizeMin}-{competition.teamSizeMax} people
               </dd>
             </div>
             <div>
               <dt className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-ink-faint">
-                <Coins size={13} /> Biaya
+                <Coins size={13} /> Fee
               </dt>
               <dd className="mt-1 text-sm text-ink">{formatRupiah(competition.fee)}</dd>
             </div>
             <div>
               <dt className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-ink-faint">
-                <MapPin size={13} /> Lokasi
+                <MapPin size={13} /> Location
               </dt>
               <dd className="mt-1 text-sm text-ink">{competition.location}</dd>
             </div>
@@ -149,22 +149,22 @@ export default function CompetitionDetailPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <section className="glass p-5 sm:p-6">
-            <h2 className="font-display text-lg font-semibold">Deskripsi</h2>
+            <h2 className="font-display text-lg font-semibold">About</h2>
             <p className="mt-2 leading-relaxed text-ink-muted">{competition.description}</p>
           </section>
 
           {competition.status === 'selesai' && competition.winners && (
             <section className="glass p-5 sm:p-6">
               <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
-                <Medal size={18} className="text-amber" /> Pemenang
+                <Medal size={18} className="text-amber" /> Winners
               </h2>
               <div className="mt-4 overflow-x-auto">
                 <table className="w-full min-w-[32rem] text-left text-sm">
                   <thead>
                     <tr className="border-b border-white/10 text-xs uppercase tracking-wide text-ink-faint">
-                      <th scope="col" className="pb-2 pr-4 font-medium">Peringkat</th>
-                      <th scope="col" className="pb-2 pr-4 font-medium">Tim</th>
-                      <th scope="col" className="pb-2 font-medium">Anggota</th>
+                      <th scope="col" className="pb-2 pr-4 font-medium">Place</th>
+                      <th scope="col" className="pb-2 pr-4 font-medium">Team</th>
+                      <th scope="col" className="pb-2 font-medium">Members</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -179,7 +179,7 @@ export default function CompetitionDetailPage() {
                         </td>
                         <td className="py-3">
                           {w.memberIds.length === 0 ? (
-                            <span className="text-ink-faint">—</span>
+                            <span className="text-ink-faint">Not listed</span>
                           ) : (
                             <div className="flex flex-wrap gap-2">
                               {w.memberIds.map((mid) => {
@@ -209,14 +209,14 @@ export default function CompetitionDetailPage() {
 
           <section className="glass p-5 sm:p-6">
             <h2 className="font-display text-lg font-semibold">
-              Tim terdaftar
+              Registered teams
               <span className="ml-2 text-sm font-normal text-ink-faint">
                 ({registeredTeams.length})
               </span>
             </h2>
             {registeredTeams.length === 0 ? (
               <p className="mt-3 text-sm text-ink-muted">
-                Belum ada tim yang mendaftar lewat COM@T untuk lomba ini.
+                No teams have registered through COM@T yet.
               </p>
             ) : (
               <ul className="mt-4 space-y-3">
@@ -228,8 +228,8 @@ export default function CompetitionDetailPage() {
                     <div className="min-w-0">
                       <p className="font-medium text-white">{team.name}</p>
                       <p className="mt-0.5 text-xs text-ink-muted">
-                        {team.members.length} anggota ·{' '}
-                        {team.members.filter((m) => m.confirmed).length} terkonfirmasi
+                        {team.members.length} members ·{' '}
+                        {team.members.filter((m) => m.confirmed).length} confirmed
                       </p>
                     </div>
                     <div className="flex -space-x-2">
@@ -276,13 +276,13 @@ export default function CompetitionDetailPage() {
           </section>
 
           <section className="glass p-5">
-            <h2 className="font-display text-lg font-semibold">Tim yang masih butuh anggota</h2>
+            <h2 className="font-display text-lg font-semibold">Teams still recruiting</h2>
             {teamsWithSlots.length === 0 ? (
               <div className="mt-3">
                 <EmptyState
                   icon={<Users size={20} />}
-                  title="Tidak ada slot kosong"
-                  description="Semua tim di lomba ini sudah lengkap."
+                  title="No open spots"
+                  description="Every team in this competition is full."
                 />
               </div>
             ) : (
@@ -295,12 +295,12 @@ export default function CompetitionDetailPage() {
                         .filter((s) => !s.filled)
                         .map((slot) => (
                           <li key={slot.id} className="text-sm text-ink-muted">
-                            <span className="text-cyan-soft">Butuh:</span> {slot.role}
+                            <span className="text-cyan-soft">Needs:</span> {slot.role}
                           </li>
                         ))}
                     </ul>
                     <LinkButton to="/cari-tim" variant="outline" size="sm" className="mt-3">
-                      Lihat & lamar
+                      View and apply
                     </LinkButton>
                   </li>
                 ))}

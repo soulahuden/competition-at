@@ -68,8 +68,7 @@ export default function MyTeamsPage() {
   return (
     <div className="space-y-6">
       <SectionTitle
-        title="Tim Saya"
-        description="Kelola roster, konfirmasi anggota, dan pantau status pendaftaran."
+        title="My Teams"
         action={
           <Button
             onClick={() => {
@@ -77,7 +76,7 @@ export default function MyTeamsPage() {
               setWizardOpen(true);
             }}
           >
-            <Plus size={16} /> Buat Tim
+            <Plus size={16} /> Create team
           </Button>
         }
       />
@@ -85,7 +84,7 @@ export default function MyTeamsPage() {
       {incoming.length > 0 && (
         <section className="glass p-5" aria-labelledby="lamaran-masuk">
           <h2 id="lamaran-masuk" className="flex items-center gap-2 font-display text-lg font-semibold">
-            <Inbox size={18} className="text-cyan" /> Lamaran masuk
+            <Inbox size={18} className="text-cyan" /> Applications
             <Badge tone="cyan">{incoming.length}</Badge>
           </h2>
           <ul className="mt-4 space-y-3">
@@ -110,11 +109,11 @@ export default function MyTeamsPage() {
                           {applicant.name}
                         </Link>
                         <span className="text-xs text-ink-faint">
-                          {applicant.major} · Angkatan {applicant.cohort}
+                          {applicant.major} · Class of {applicant.cohort}
                         </span>
                       </div>
                       <p className="mt-1 text-xs text-ink-muted">
-                        Melamar <span className="text-cyan-soft">{slot?.role ?? 'slot tim'}</span> di{' '}
+                        Applied for <span className="text-cyan-soft">{slot?.role ?? 'an open slot'}</span> on{' '}
                         {team.name}
                       </p>
                       <p className="mt-2 text-sm leading-relaxed text-ink-muted">“{app.message}”</p>
@@ -130,14 +129,14 @@ export default function MyTeamsPage() {
                       )}
                       <div className="mt-3 flex flex-wrap gap-2">
                         <Button size="sm" onClick={() => void acceptApplication(app.id)}>
-                          <UserCheck size={15} /> Terima
+                          <UserCheck size={15} /> Accept
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => void rejectApplication(app.id)}
                         >
-                          Tolak
+                          Decline
                         </Button>
                       </div>
                     </div>
@@ -152,16 +151,16 @@ export default function MyTeamsPage() {
       {myTeams.length === 0 ? (
         <EmptyState
           icon={<Users size={22} />}
-          title="Kamu belum tergabung di tim mana pun"
-          description="Buat tim sendiri untuk lomba yang kamu incar, atau lamar slot kosong di halaman Cari Tim."
+          title="You're not on a team yet"
+          description="Start your own, or apply for an open spot in Find a Team."
           action={
             <div className="flex flex-wrap justify-center gap-3">
-              <Button onClick={() => setWizardOpen(true)}>Buat Tim</Button>
+              <Button onClick={() => setWizardOpen(true)}>Create team</Button>
               <Link
                 to="/cari-tim"
                 className="inline-flex h-11 items-center rounded-xl border border-white/20 bg-white/5 px-4 text-sm text-ink transition hover:bg-white/10"
               >
-                Cari tim
+                Find a team
               </Link>
             </div>
           }
@@ -184,7 +183,7 @@ export default function MyTeamsPage() {
                       <Badge tone={teamStatusTone[team.status]}>
                         {teamStatusLabel[team.status]}
                       </Badge>
-                      {isCaptain && <Badge tone="cyan">Kapten</Badge>}
+                      {isCaptain && <Badge tone="cyan">Captain</Badge>}
                       {team.result && <Badge tone="amber">{team.result}</Badge>}
                     </div>
                     {competition && (
@@ -200,27 +199,27 @@ export default function MyTeamsPage() {
                   <div className="flex flex-wrap gap-2">
                     {me && !me.confirmed && (
                       <Button size="sm" onClick={() => void confirmMember(team.id, currentUserId)}>
-                        <UserCheck size={15} /> Konfirmasi keikutsertaan
+                        <UserCheck size={15} /> Confirm my spot
                       </Button>
                     )}
                     {isCaptain && !team.paid && competition && competition.fee > 0 && (
                       <Button size="sm" variant="secondary" onClick={() => setPayTeam(team)}>
-                        <Wallet size={15} /> Bayar pendaftaran
+                        <Wallet size={15} /> Pay registration
                       </Button>
                     )}
                     {isCaptain && team.status === 'terkonfirmasi' && (
                       <Button size="sm" variant="outline" onClick={() => void lockRoster(team.id)}>
-                        <Lock size={15} /> Kunci roster
+                        <Lock size={15} /> Lock roster
                       </Button>
                     )}
                     {team.status === 'selesai' && !team.peerReviewDone && (
                       <Button size="sm" onClick={() => setReviewTeam(team)}>
-                        <Star size={15} /> Beri Peer Review
+                        <Star size={15} /> Write peer review
                       </Button>
                     )}
                     {team.status === 'selesai' && team.peerReviewDone && (
                       <Badge tone="success" icon={<ClipboardCheck size={12} />}>
-                        Peer review terkirim
+                        Peer review sent
                       </Badge>
                     )}
                   </div>
@@ -229,7 +228,7 @@ export default function MyTeamsPage() {
                 <div className="grid gap-5 p-5 lg:grid-cols-3">
                   <div className="lg:col-span-2">
                     <h3 className="text-sm font-medium uppercase tracking-wide text-ink-faint">
-                      Anggota ({team.members.length})
+                      Members ({team.members.length})
                     </h3>
                     <ul className="mt-3 space-y-2">
                       {team.members.map((member) => {
@@ -250,9 +249,9 @@ export default function MyTeamsPage() {
                               </Link>
                               <p className="text-xs text-ink-muted">{member.role}</p>
                             </div>
-                            {member.isCaptain && <Badge tone="cyan">Kapten</Badge>}
+                            {member.isCaptain && <Badge tone="cyan">Captain</Badge>}
                             <Badge tone={member.confirmed ? 'success' : 'amber'}>
-                              {member.confirmed ? 'Sudah konfirmasi' : 'Belum konfirmasi'}
+                              {member.confirmed ? 'Confirmed' : 'Not confirmed'}
                             </Badge>
                           </li>
                         );
@@ -261,7 +260,7 @@ export default function MyTeamsPage() {
 
                     {!allConfirmed && (
                       <p className="mt-3 rounded-xl border border-amber/25 bg-amber/10 p-3 text-xs text-amber-soft">
-                        Tim baru sah setelah semua anggota mengonfirmasi keikutsertaan.
+                        The team counts once every member confirms.
                       </p>
                     )}
                   </div>
@@ -269,10 +268,10 @@ export default function MyTeamsPage() {
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-sm font-medium uppercase tracking-wide text-ink-faint">
-                        Slot kosong
+                        Open slots
                       </h3>
                       {openSlots.length === 0 ? (
-                        <p className="mt-2 text-sm text-ink-muted">Roster sudah lengkap.</p>
+                        <p className="mt-2 text-sm text-ink-muted">Roster is full.</p>
                       ) : (
                         <ul className="mt-2 space-y-2">
                           {openSlots.map((slot) => (
@@ -298,18 +297,18 @@ export default function MyTeamsPage() {
 
                     <dl className="space-y-2 rounded-xl border border-white/10 bg-white/5 p-3 text-xs">
                       <div className="flex justify-between gap-3">
-                        <dt className="text-ink-faint">Roster dikunci</dt>
+                        <dt className="text-ink-faint">Roster locks</dt>
                         <dd className="text-ink">{formatDate(team.rosterLockDate)}</dd>
                       </div>
                       <div className="flex justify-between gap-3">
-                        <dt className="text-ink-faint">Biaya pendaftaran</dt>
+                        <dt className="text-ink-faint">Registration fee</dt>
                         <dd className="text-ink">{formatRupiah(competition?.fee ?? 0)}</dd>
                       </div>
                       <div className="flex justify-between gap-3">
-                        <dt className="text-ink-faint">Status bayar</dt>
+                        <dt className="text-ink-faint">Payment</dt>
                         <dd>
                           <Badge tone={team.paid ? 'success' : 'amber'}>
-                            {team.paid ? 'Lunas' : 'Belum dibayar'}
+                            {team.paid ? 'Paid' : 'Unpaid'}
                           </Badge>
                         </dd>
                       </div>
@@ -332,8 +331,8 @@ export default function MyTeamsPage() {
         <Modal
           open={Boolean(payTeam)}
           onClose={() => setPayTeam(null)}
-          title="Checkout pendaftaran"
-          description={`Tim ${payTeam.name}`}
+          title="Registration checkout"
+          description={payTeam.name}
         >
           {(() => {
             const competition = competitions.find((c) => c.id === payTeam.competitionId);

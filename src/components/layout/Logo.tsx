@@ -47,7 +47,7 @@ export function Logo({ to = '/', className, size = 'md' }: LogoProps) {
     <Link
       to={to}
       className={cn('group inline-flex items-center gap-2', className)}
-      aria-label="COM@T — beranda"
+      aria-label="COM@T home"
     >
       <CometMark className={size === 'lg' ? 'h-8 w-8' : 'h-6 w-6'} />
       <span className={cn('font-display font-bold tracking-tight text-white', sizes[size])}>

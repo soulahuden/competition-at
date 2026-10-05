@@ -4,15 +4,15 @@ import type { CompetitionStatus, CompetitionTier } from '@/types';
 export const tierTone: Record<CompetitionTier, BadgeTone> = {
   Internal: 'neutral',
   Regional: 'cyan',
-  Nasional: 'violet',
-  Internasional: 'amber',
+  National: 'violet',
+  International: 'amber',
 };
 
 export const statusLabel: Record<CompetitionStatus, string> = {
-  mendatang: 'Mendatang',
-  berjalan: 'Sedang berjalan',
-  selesai: 'Selesai',
-  moderasi: 'Menunggu moderasi',
+  mendatang: 'Upcoming',
+  berjalan: 'In progress',
+  selesai: 'Finished',
+  moderasi: 'Under review',
 };
 
 export const statusTone: Record<CompetitionStatus, BadgeTone> = {
@@ -30,19 +30,19 @@ export const posterGradient: Record<string, string> = {
 
 export const categories = [
   'IT',
-  'Bisnis',
-  'Desain',
-  'Esai',
-  'Sains',
-  'Robotika',
-  'Debat',
+  'Business',
+  'Design',
+  'Essay',
+  'Science',
+  'Robotics',
+  'Debate',
 ] as const;
 
-export const tiers = ['Internal', 'Regional', 'Nasional', 'Internasional'] as const;
+export const tiers = ['Internal', 'Regional', 'National', 'International'] as const;
 
 export const benefitOptions = [
-  'Bisa ajukan dana kampus',
-  'Dispensasi kuliah',
-  'Konversi SKS',
-  'Poin SKKM',
+  'Campus funding',
+  'Class dispensation',
+  'Credit transfer',
+  'SKKM points',
 ] as const;

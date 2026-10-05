@@ -6,9 +6,8 @@ export default function NotFoundPage() {
     <div className="mx-auto max-w-lg py-16">
       <EmptyState
         icon={<Rocket size={22} />}
-        title="Halaman tidak ditemukan"
-        description="Sepertinya kamu tersesat di luar orbit. Kembali ke dashboard untuk melanjutkan."
-        action={<LinkButton to="/dashboard">Kembali ke Dashboard</LinkButton>}
+        title="Page not found"
+        action={<LinkButton to="/dashboard">Back to dashboard</LinkButton>}
       />
     </div>
   );

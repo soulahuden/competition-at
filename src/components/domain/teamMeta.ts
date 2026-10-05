@@ -2,10 +2,10 @@ import type { BadgeTone } from '@/components/ui';
 import type { TeamStatus } from '@/types';
 
 export const teamStatusLabel: Record<TeamStatus, string> = {
-  'menunggu-konfirmasi': 'Menunggu konfirmasi anggota',
-  terkonfirmasi: 'Terkonfirmasi',
-  'roster-terkunci': 'Roster terkunci',
-  selesai: 'Selesai',
+  'menunggu-konfirmasi': 'Waiting on members',
+  terkonfirmasi: 'Confirmed',
+  'roster-terkunci': 'Roster locked',
+  selesai: 'Finished',
 };
 
 export const teamStatusTone: Record<TeamStatus, BadgeTone> = {
@@ -25,7 +25,7 @@ export const roleSuggestions = [
   'Business Analyst',
   'Financial Analyst',
   'Market Researcher',
-  'Penulis Esai',
+  'Essay Writer',
   'Public Speaker',
   'Cryptography Specialist',
   'Reverse Engineering',

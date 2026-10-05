@@ -36,7 +36,7 @@ export function AvatarMenu() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        aria-label="Menu akun"
+        aria-label="Account menu"
         className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-1.5 pr-2 transition hover:border-cyan/40"
       >
         <Avatar name={me.name} size="sm" />
@@ -48,7 +48,7 @@ export function AvatarMenu() {
           <div className="border-b border-white/10 p-4">
             <p className="font-display font-semibold text-white">{me.name}</p>
             <p className="text-xs text-ink-muted">
-              {me.major} · Angkatan {me.cohort}
+              {me.major} · Class of {me.cohort}
             </p>
           </div>
 
@@ -58,23 +58,23 @@ export function AvatarMenu() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm text-ink transition hover:bg-white/10 hover:text-white"
             >
-              <User size={16} /> Profil saya
+              <User size={16} /> My profile
             </Link>
             <Link
               to="/penyelenggara"
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm text-ink transition hover:bg-white/10 hover:text-white"
             >
-              <Building2 size={16} /> Portal Penyelenggara
+              <Building2 size={16} /> Organizer portal
             </Link>
           </div>
 
           <div className="border-t border-white/10 p-3">
             <p className="mb-2 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-faint">
-              <Users size={12} /> Mode demo — ganti persona
+              <Users size={12} /> Demo: switch persona
             </p>
             <label className="sr-only" htmlFor={personaSelectId}>
-              Pilih persona
+              Choose a persona
             </label>
             <select
               id={personaSelectId}
@@ -87,13 +87,12 @@ export function AvatarMenu() {
             >
               {students.map((s) => (
                 <option key={s.id} value={s.id}>
-                  {s.name} — {s.major}
+                  {s.name}, {s.major}
                 </option>
               ))}
             </select>
             <p className="mt-2 text-[11px] leading-relaxed text-ink-faint">
-              Dipakai untuk mendemokan alur dua sisi: melamar sebagai mahasiswa lain, lalu kembali
-              sebagai kapten untuk menerima.
+              Apply as someone else, then switch back and accept as the captain.
             </p>
           </div>
 
@@ -105,7 +104,7 @@ export function AvatarMenu() {
               }}
               className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm text-ink-muted transition hover:bg-white/10 hover:text-white"
             >
-              <LogOut size={16} /> Keluar
+              <LogOut size={16} /> Sign out
             </button>
           </div>
         </div>

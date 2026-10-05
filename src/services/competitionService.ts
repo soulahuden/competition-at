@@ -85,10 +85,10 @@ export async function createCompetition(input: NewCompetitionInput): Promise<Com
     featured: false,
     poster: 'violet',
     timeline: [
-      { label: 'Pendaftaran dibuka', date: TODAY_ISO, done: true },
-      { label: 'Batas akhir pendaftaran', date: input.registrationDeadline, done: false },
-      { label: 'Lomba dimulai', date: input.startDate, done: false },
-      { label: 'Lomba selesai', date: input.endDate, done: false },
+      { label: 'Registration opens', date: TODAY_ISO, done: true },
+      { label: 'Registration deadline', date: input.registrationDeadline, done: false },
+      { label: 'Competition starts', date: input.startDate, done: false },
+      { label: 'Competition ends', date: input.endDate, done: false },
     ],
     participantTeamIds: [],
   };
@@ -126,11 +126,11 @@ export async function submitResults(
   const competition = db.competitions.find((c) => c.id === competitionId);
   if (!competition) return delay(undefined);
 
-  const outcomeByRank: Record<number, 'Juara 1' | 'Juara 2' | 'Juara 3' | 'Finalis'> = {
-    1: 'Juara 1',
-    2: 'Juara 2',
-    3: 'Juara 3',
-    0: 'Finalis',
+  const outcomeByRank: Record<number, '1st place' | '2nd place' | '3rd place' | 'Finalist'> = {
+    1: '1st place',
+    2: '2nd place',
+    3: '3rd place',
+    0: 'Finalist',
   };
 
   const winners: Winner[] = [];
@@ -140,7 +140,7 @@ export async function submitResults(
     if (!team) continue;
 
     const entry = results.find((r) => r.teamId === teamId);
-    const outcome = entry ? outcomeByRank[entry.rank] : 'Tidak lolos';
+    const outcome = entry ? outcomeByRank[entry.rank] : 'Eliminated';
 
     team.status = 'selesai';
     team.result = outcome;
@@ -178,7 +178,7 @@ export async function submitResults(
       if (entry && entry.rank !== 0) {
         student.achievements.unshift({
           id: uid('a'),
-          title: `${outcome} ${competition.name}`,
+          title: `${outcome}, ${competition.name}`,
           competitionName: competition.name,
           year: new Date(competition.endDate).getFullYear(),
           verification: 'penyelenggara',
@@ -188,8 +188,8 @@ export async function submitResults(
       db.notifications.unshift({
         id: uid('n'),
         kind: 'poin',
-        title: `Hasil ${competition.name} diumumkan`,
-        body: `Tim ${team.name} — ${outcome}. ${activity + win} poin masuk ke leaderboard.`,
+        title: `${competition.name} results are out`,
+        body: `${team.name}: ${outcome}. ${activity + win} points added to the leaderboard.`,
         createdAt: TODAY_ISO,
         read: false,
         href: '/leaderboard',
@@ -199,8 +199,8 @@ export async function submitResults(
       db.notifications.unshift({
         id: uid('n'),
         kind: 'review',
-        title: 'Peer review dibuka',
-        body: `Beri peer review untuk rekan tim ${team.name}.`,
+        title: 'Peer review is open',
+        body: `Review your ${team.name} teammates.`,
         createdAt: TODAY_ISO,
         read: false,
         href: '/tim',

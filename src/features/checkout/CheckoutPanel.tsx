@@ -6,7 +6,7 @@ import { platformFeeRate } from '@/data/organizers';
 import type { Competition } from '@/types';
 
 const methods = [
-  { id: 'QRIS', label: 'QRIS', hint: 'Scan dari aplikasi bank atau e-wallet', icon: QrCode },
+  { id: 'QRIS', label: 'QRIS', hint: 'Scan with any bank or e-wallet app', icon: QrCode },
   { id: 'Virtual Account', label: 'Virtual Account', hint: 'BCA · Mandiri · BNI · BRI', icon: CreditCard },
   { id: 'E-Wallet', label: 'E-Wallet', hint: 'GoPay · OVO · DANA · ShopeePay', icon: Smartphone },
 ];
@@ -30,7 +30,7 @@ export function CheckoutPanel({
   memberCount,
   onPaid,
   onCancel,
-  submitLabel = 'Bayar sekarang',
+  submitLabel = 'Pay now',
 }: CheckoutPanelProps) {
   const [method, setMethod] = useState(methods[0].id);
   const [processing, setProcessing] = useState(false);
@@ -55,14 +55,13 @@ export function CheckoutPanel({
           <CheckCircle2 size={28} />
         </span>
         <div>
-          <p className="font-display text-lg font-semibold text-white">Pembayaran berhasil</p>
+          <p className="font-display text-lg font-semibold text-white">Payment received</p>
           <p className="mt-1 text-sm text-ink-muted">
-            Tim <span className="text-white">{teamName}</span> resmi terdaftar di{' '}
-            {competition.name}.
+            <span className="text-white">{teamName}</span> is registered for {competition.name}.
           </p>
         </div>
-        <Badge tone="success">Lunas via {method}</Badge>
-        <p className="text-xs text-ink-faint">Bukti pembayaran dikirim ke email kampus kamu.</p>
+        <Badge tone="success">Paid via {method}</Badge>
+        <p className="text-xs text-ink-faint">A receipt was sent to your campus email.</p>
       </div>
     );
   }
@@ -70,20 +69,20 @@ export function CheckoutPanel({
   return (
     <div className="space-y-5">
       <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-        <p className="text-xs uppercase tracking-wide text-ink-faint">Rincian biaya</p>
+        <p className="text-xs uppercase tracking-wide text-ink-faint">Breakdown</p>
         <dl className="mt-3 space-y-2 text-sm">
           <div className="flex justify-between gap-4">
             <dt className="text-ink-muted">
-              Pendaftaran tim · {competition.name}
+              Team registration · {competition.name}
             </dt>
             <dd className="text-ink">{formatRupiah(competition.fee)}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-ink-muted">Biaya layanan</dt>
+            <dt className="text-ink-muted">Service fee</dt>
             <dd className="text-ink">{formatRupiah(adminFee)}</dd>
           </div>
           <div className="flex justify-between gap-4 text-xs text-ink-faint">
-            <dt>Termasuk fee platform COM@T ({Math.round(platformFeeRate * 100)}%)</dt>
+            <dt>Includes COM@T platform fee ({Math.round(platformFeeRate * 100)}%)</dt>
             <dd>{formatRupiah(platformCut)}</dd>
           </div>
           <div className="flex justify-between gap-4 border-t border-white/10 pt-2 font-semibold">
@@ -92,12 +91,12 @@ export function CheckoutPanel({
           </div>
         </dl>
         <p className="mt-3 text-xs text-ink-faint">
-          Untuk {memberCount} anggota · Tim {teamName}
+          {memberCount} members · {teamName}
         </p>
       </div>
 
       <fieldset>
-        <legend className="mb-2 text-sm font-medium text-ink">Metode pembayaran</legend>
+        <legend className="mb-2 text-sm font-medium text-ink">Payment method</legend>
         <div className="space-y-2">
           {methods.map((m) => {
             const Icon = m.icon;
@@ -140,17 +139,17 @@ export function CheckoutPanel({
 
       <p className="flex items-start gap-2 rounded-xl border border-amber/25 bg-amber/10 p-3 text-xs text-amber-soft">
         <Wallet size={15} className="mt-0.5 shrink-0" />
-        Tampilan saja — prototipe ini tidak memproses pembayaran sungguhan.
+        This is a prototype. No real payment is made.
       </p>
 
       <div className="flex flex-wrap justify-end gap-3">
         {onCancel && (
           <Button variant="ghost" onClick={onCancel}>
-            Nanti saja
+            Not now
           </Button>
         )}
         <Button onClick={() => void handlePay()} disabled={processing}>
-          {processing ? 'Memproses…' : `${submitLabel} · ${formatRupiah(total)}`}
+          {processing ? 'Processing…' : `${submitLabel} · ${formatRupiah(total)}`}
         </Button>
       </div>
     </div>

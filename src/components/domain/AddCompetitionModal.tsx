@@ -60,16 +60,16 @@ export function AddCompetitionModal({ open, onClose, onCreated }: AddCompetition
     <Modal
       open={open}
       onClose={onClose}
-      title="Tambah Lomba"
-      description="Lomba yang kamu tambahkan masuk antrean moderasi sebelum tampil di katalog publik."
+      title="Add a competition"
+      description="We review it before it shows up in the catalog."
       size="lg"
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>
-            Batal
+            Cancel
           </Button>
           <Button onClick={() => void handleSubmit()} disabled={submitting}>
-            {submitting ? 'Mengirim…' : 'Kirim untuk moderasi'}
+            {submitting ? 'Sending…' : 'Submit for review'}
           </Button>
         </>
       }
@@ -77,21 +77,21 @@ export function AddCompetitionModal({ open, onClose, onCreated }: AddCompetition
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div className="grid gap-4 sm:grid-cols-2">
           <TextField
-            label="Nama lomba"
+            label="Competition name"
             required
-            placeholder="Contoh: Hackathon Nusantara 2026"
+            placeholder="e.g. Nusantara Hackathon 2026"
             value={form.name}
             onChange={(e) => update('name', e.target.value)}
           />
           <TextField
-            label="Penyelenggara"
+            label="Organizer"
             required
-            placeholder="Contoh: Himpunan Mahasiswa Informatika"
+            placeholder="e.g. Computer Science Student Association"
             value={form.organizer}
             onChange={(e) => update('organizer', e.target.value)}
           />
           <SelectField
-            label="Kategori"
+            label="Category"
             value={form.category}
             onChange={(e) => update('category', e.target.value as CompetitionCategory)}
           >
@@ -115,27 +115,27 @@ export function AddCompetitionModal({ open, onClose, onCreated }: AddCompetition
         </div>
 
         <TextAreaField
-          label="Deskripsi singkat"
-          placeholder="Format lomba, tema, dan hal penting lain yang perlu diketahui peserta."
+          label="Short description"
+          placeholder="Format, theme, and anything participants should know."
           value={form.description}
           onChange={(e) => update('description', e.target.value)}
         />
 
         <div className="grid gap-4 sm:grid-cols-3">
           <TextField
-            label="Deadline pendaftaran"
+            label="Registration deadline"
             type="date"
             value={form.registrationDeadline}
             onChange={(e) => update('registrationDeadline', e.target.value)}
           />
           <TextField
-            label="Tanggal mulai"
+            label="Start date"
             type="date"
             value={form.startDate}
             onChange={(e) => update('startDate', e.target.value)}
           />
           <TextField
-            label="Tanggal selesai"
+            label="End date"
             type="date"
             value={form.endDate}
             onChange={(e) => update('endDate', e.target.value)}
@@ -144,38 +144,38 @@ export function AddCompetitionModal({ open, onClose, onCreated }: AddCompetition
 
         <div className="grid gap-4 sm:grid-cols-4">
           <TextField
-            label="Min. anggota"
+            label="Min. team size"
             type="number"
             min={1}
             value={form.teamSizeMin}
             onChange={(e) => update('teamSizeMin', Number(e.target.value))}
           />
           <TextField
-            label="Maks. anggota"
+            label="Max. team size"
             type="number"
             min={1}
             value={form.teamSizeMax}
             onChange={(e) => update('teamSizeMax', Number(e.target.value))}
           />
           <TextField
-            label="Biaya (Rp)"
+            label="Fee (Rp)"
             type="number"
             min={0}
             step={10000}
-            hint="Isi 0 untuk gratis"
+            hint="Enter 0 if it's free"
             value={form.fee}
             onChange={(e) => update('fee', Number(e.target.value))}
           />
           <TextField
-            label="Lokasi"
-            placeholder="Daring / Jakarta"
+            label="Location"
+            placeholder="Online / Jakarta"
             value={form.location}
             onChange={(e) => update('location', e.target.value)}
           />
         </div>
 
         <fieldset>
-          <legend className="mb-2 text-sm font-medium text-ink">Benefit kampus</legend>
+          <legend className="mb-2 text-sm font-medium text-ink">Campus benefits</legend>
           <div className="flex flex-wrap gap-2">
             {benefitOptions.map((benefit) => {
               const active = benefits.includes(benefit);

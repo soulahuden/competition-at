@@ -9,7 +9,7 @@ interface TooltipProps {
 }
 
 /** Tooltip sederhana: tampil saat hover maupun fokus keyboard. */
-export function Tooltip({ content, children, label = 'Penjelasan' }: TooltipProps) {
+export function Tooltip({ content, children, label = 'More info' }: TooltipProps) {
   const [open, setOpen] = useState(false);
 
   return (

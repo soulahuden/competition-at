@@ -1,66 +1,227 @@
-# COM@T — Competition At
+<div align="center">
 
-Prototipe **frontend** platform kampus untuk membentuk tim lomba. Tanpa backend: semua data
-berasal dari mock data in-memory.
+# ☄️ COM@T (Competition At)
 
-## Menjalankan
+### Every comet needs a crew.
+
+**Find competition teammates you can actually count on.** COM@T matches students from different majors
+into competition teams by **skills**, **checked track records**, and a **reliability score**, not by
+scrolling a group chat that buries every post within minutes.
+
+![React](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-0F172A?style=for-the-badge&logo=tailwindcss&logoColor=38BDF8)
+![Status](https://img.shields.io/badge/status-prototype-8B5CF6?style=for-the-badge)
+
+<br />
+
+<img src="docs/screenshots/landing.png" alt="COM@T intro screen: a comet's arc of light sweeps across a starfield behind the headline 'Every Comet Needs a Crew'" width="100%" />
+
+<sub>The intro screen. A comet falls, draws an arc of light, and one <b>Let's Go</b> button takes you in.</sub>
+
+</div>
+
+---
+
+## 🌌 The problem
+
+Every semester brings dozens of competitions: hackathons, business cases, robotics, debate, CTFs.
+Finding them is easy. **Finding three or four people whose skills fit together, and who will stick
+around until submission day, is the hard part.**
+
+- 📉 Recruitment posts get buried in group chats within minutes.
+- 👻 A team forms, then someone disappears the day before submission.
+- 🎲 You can't tell in advance whether a new teammate will pull their weight.
+
+<p align="center">
+  <img src="docs/screenshots/landing-features.png" alt="Landing page section: a short paragraph about group chats and three points on open spots, checked track records, and the reliability score" width="90%" />
+</p>
+
+---
+
+## ✨ What makes it different
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 🔍 Open spots, per competition
+Every competition shows which teams still need people, for what **role**, and with which
+**skills**. Apply in one click.
+
+</td>
+<td width="33%" valign="top">
+
+### ✅ Track records that are checked
+Wins are confirmed by the **organizer or teammates**, not self-reported. Losses and dropouts show
+up too.
+
+</td>
+<td width="33%" valign="top">
+
+### 🛡️ Reliability score
+Built from **peer reviews** after every competition: effort, responsiveness, and seeing it through.
+Just signing up for lots of competitions doesn't raise it.
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📸 A look inside
+
+<table>
+<tr>
+<td width="50%">
+<img src="docs/screenshots/dashboard.png" alt="Student dashboard" />
+<p align="center"><b>Dashboard</b>: your rank, points, reliability score, and competitions picked for your interests.</p>
+</td>
+<td width="50%">
+<img src="docs/screenshots/competitions.png" alt="Competition catalog" />
+<p align="center"><b>Competitions</b>: filter by category, tier (Internal → International), and fee.</p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="docs/screenshots/competition-detail.png" alt="Competition detail page" />
+<p align="center"><b>Competition detail</b>: dates, timeline, campus benefits, and registered teams.</p>
+</td>
+<td width="50%">
+<img src="docs/screenshots/find-team.png" alt="Find a Team page" />
+<p align="center"><b>Find a Team</b>: open spots with the exact skills each team needs.</p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="docs/screenshots/my-teams.png" alt="My Teams page" />
+<p align="center"><b>My Teams</b>: accept or decline applications and manage your roster.</p>
+</td>
+<td width="50%">
+<img src="docs/screenshots/leaderboard.png" alt="Leaderboard" />
+<p align="center"><b>Leaderboard</b>: activity points plus win points, weighted by competition tier.</p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="docs/screenshots/organizer.png" alt="Organizer portal" />
+<p align="center"><b>Organizer portal</b>: registrants, collected fees, results, and Featured Listings.</p>
+</td>
+<td width="50%" align="center">
+<img src="docs/screenshots/mobile-landing.png" alt="Mobile view of the intro screen" width="55%" />
+<p align="center"><b>Mobile</b>: works on phone screens too.</p>
+</td>
+</tr>
+</table>
+
+---
+
+## 🏆 How the points work
+
+Points only count for competitions registered **on COM@T before they start**, and are weighted by
+tier:
+
+| Tier          | Weight | Activity pts | 1st place | 2nd place | 3rd place | Finalist |
+| ------------- | :----: | :----------: | :-------: | :-------: | :-------: | :------: |
+| Internal      |   ×1   |      20      |    100    |    75     |    55     |    35    |
+| Regional      |   ×2   |      40      |    200    |    150    |    110    |    70    |
+| National      |   ×3   |      60      |    300    |    225    |    165    |   105    |
+| International |   ×4   |      80      |    400    |    300    |    220    |   140    |
+
+The **reliability score** only appears after a student has joined **at least 3 competitions**, so one
+bad team can't define anyone.
+
+---
+
+## 🚀 Try it in 30 seconds
+
+**On Windows:** double-click **`start.bat`**. It installs packages the first time, then opens the
+site at `http://localhost:5173`. Close the window to stop it.
+
+**Anywhere else:**
 
 ```bash
+git clone https://github.com/soulahuden/competition-at.git
+cd competition-at
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # build produksi + typecheck
+npm run dev      # → http://localhost:5173
 ```
 
-## Tech stack
+```bash
+npm run build    # production build + typecheck
+```
 
-Vite · React 18 · TypeScript · Tailwind CSS · React Router · lucide-react
+> **Note:** This is a **frontend-only prototype**. Every student, team, and competition is sample
+> data kept in memory. There is no backend, no sign-up, and no real payment.
 
-## Struktur
+---
+
+## 🎬 Full demo walkthrough
+
+Use **Demo: switch persona** in the avatar menu to play both the **applicant** and the **team captain**.
+
+1. **Competitions** (`/lomba`): open a competition and click **Register a team**.
+2. **Create a team**: pick the competition, name your team and invite members, then add the open slots.
+   Paid competitions continue to a sample checkout (QRIS, Virtual Account, or e-wallet).
+3. The open slots **show up right away** in **Find a Team** (`/cari-tim`).
+4. Switch to another student and click **Apply**. The button changes to *Applied*.
+5. Switch back to the captain, go to **My Teams** (`/tim`), find the request under **Applications**, and
+   click **Accept**. The slot fills and the new member joins.
+6. **Organizer portal** (`/penyelenggara`): open **Results**, click **Enter results**, pick the winners, and
+   **Announce results**. The competition closes.
+7. Back in **My Teams**: **Write peer review**, answering 3 questions on a 1 to 5 scale for each
+   teammate. There is no free-text comment box.
+8. **Leaderboard** (`/leaderboard`): activity and win points go up, and your own row is highlighted.
+
+---
+
+## 🧱 Under the hood
+
+**Stack:** Vite · React 18 · TypeScript · Tailwind CSS · React Router · lucide-react
 
 ```
 src/
-├─ data/        mock data mentah (20 mahasiswa, 12 lomba, 6 tim, lamaran, notifikasi)
-├─ services/    fungsi async pembungkus data — satu-satunya jalur akses data
-├─ context/     state global (Auth, Store, Notification)
-├─ components/  ui/ (reusable) · layout/ · space/ (starfield) · domain/
-├─ features/    alur multi-langkah: create-team, checkout, peer-review
-├─ pages/       satu file per rute
-└─ lib/         format tanggal/rupiah, bobot poin, aturan skor reliabilitas
+├─ data/        sample data (20 students, 12 competitions, 6 teams, applications, notifications)
+├─ services/    async wrappers around the data, the only path for data access
+├─ context/     global state (Auth, Store, Notification)
+├─ components/  ui/ (reusable) · layout/ · space/ (starfield, comet) · domain/
+├─ features/    multi-step flows: create-team, checkout, peer-review
+├─ pages/       one file per route
+└─ lib/         date and rupiah formatting, point weights, reliability rules
 ```
 
-### Mengganti mock data dengan API
+### 🔌 Plugging in a real backend
 
-Semua komponen hanya memanggil `src/services/*`. Untuk integrasi backend, ganti isi tiap fungsi
-di sana dengan `fetch` — tanda tangan fungsi (`getCompetitions()`, `applyToTeam()`, …) tidak perlu
-berubah, sehingga komponen tidak tersentuh.
+Components **only** call `src/services/*`. To connect an API, replace the body of each service
+function with a `fetch`. Signatures like `getCompetitions()` and `applyToTeam()` stay the same, so
+**no component has to change**.
 
-## Layar intro
+### 🌠 The intro animation
 
-Rute `/` adalah layar intro satu halaman penuh: komet kecil jatuh melintas, lalu busur cahaya
-tergambar mengikuti lintasannya, headline naik bertahap, dan hanya ada satu tombol **Let's Go**.
-Menekannya memicu animasi keluar (komet melesat + kilat cahaya) lalu mengarahkan ke `/dashboard`.
-Materi presentasi (masalah + 3 keunggulan) ada di bawah layar intro, bisa dicapai dengan menggulir.
+Route `/` is a full-screen intro. A small comet falls across the sky, an arc of light traces its
+path, the headline rises in, and there is a single **Let's Go** button. Pressing it plays the exit
+animation (the comet streaks off with a flash of light) and lands you on `/dashboard`. Scroll down
+(**Why COM@T?**) for a short explanation of the problem and the three ideas behind the app.
 
-Seluruh animasi intro mati total saat `prefers-reduced-motion: reduce`: busur langsung tampil utuh
-dan tombol langsung berpindah halaman.
+♿ All motion (starfield, comet, transitions) is **turned off completely** under
+`prefers-reduced-motion: reduce`. The arc appears complete and the button navigates instantly.
 
-## Alur demo lengkap
+---
 
-Gunakan **ganti persona** di dropdown avatar untuk berpindah antara pelamar dan kapten.
+## 📝 Notes
 
-1. `/lomba` → buka detail lomba → **Daftarkan Tim**
-2. Wizard 3 langkah: pilih lomba → nama tim & undang anggota → tandai slot kosong
-   (lomba berbayar lanjut ke checkout mock: QRIS / Virtual Account / e-wallet)
-3. Slot kosong otomatis tayang di `/cari-tim`
-4. Ganti persona ke mahasiswa lain → **Lamar** → status berubah jadi "Lamaran terkirim"
-5. Kembali ke persona kapten → `/tim` → **Lamaran masuk** → Terima (slot berkurang, anggota masuk)
-6. `/penyelenggara` → tab **Input hasil** → pilih juara → lomba ditutup
-7. `/tim` → **Beri Peer Review** (3 pertanyaan skala 1–5 per rekan, tanpa komentar bebas)
-8. `/leaderboard` → poin keaktifan + kemenangan bertambah, baris sendiri disorot
+- The prototype's reference date is **28 September 2026** (`TODAY` in `src/lib/format.ts`).
+- The interface is in **English**. Route paths (`/lomba`, `/cari-tim`, `/tim`, `/penyelenggara`) still
+  use their original Indonesian names.
+- Payments and Featured Listing pricing are display-only. No real transactions happen.
 
-## Catatan
+<div align="center">
 
-- Tanggal acuan prototipe: **28 September 2026** (`TODAY` di `src/lib/format.ts`).
-- Seluruh animasi (starfield, komet, transisi) dimatikan saat `prefers-reduced-motion: reduce`.
-- Pembayaran dan harga Featured Listing hanya tampilan; tidak ada transaksi sungguhan.
-# competition-at
+<br />
+
+**Built at BINUS University** ☄️
+
+*Every comet needs a crew.*
+
+</div>

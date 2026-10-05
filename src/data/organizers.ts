@@ -1,17 +1,17 @@
 import type { Organizer } from '@/types';
 
 export const organizers: Organizer[] = [
-  { id: 'o01', name: 'Garuda Developer Community', unit: 'Komunitas', contact: 'panitia@garudahack.id' },
-  { id: 'o02', name: 'Forum Bisnis Mahasiswa Indonesia', unit: 'Organisasi Mahasiswa', contact: 'ibc@fbmi.or.id' },
-  { id: 'o03', name: 'Asosiasi Desainer Digital Indonesia', unit: 'Asosiasi', contact: 'sprint@addi.id' },
-  { id: 'o04', name: 'Pusat Kajian Kebijakan Universitas Andalas', unit: 'Kampus', contact: 'pkk@unand.ac.id' },
-  { id: 'o05', name: 'Liga Debat Mahasiswa', unit: 'Komunitas', contact: 'halo@ligadebat.id' },
-  { id: 'o06', name: 'Kementerian Riset Kampus Nusantara', unit: 'BEM', contact: 'lkti@kampusnusantara.id' },
-  { id: 'o07', name: 'Pusat Prestasi Nasional', unit: 'Pemerintah', contact: 'info@puspresnas.go.id' },
-  { id: 'o08', name: 'Indonesia Data Community', unit: 'Komunitas', contact: 'sprint@idc.or.id' },
-  { id: 'o09', name: 'BINUS Student Tech Club', unit: 'UKM Kampus', contact: 'binushack@binus.ac.id' },
-  { id: 'o10', name: 'ASEAN Cyber Security Council', unit: 'Internasional', contact: 'cup@aseancyber.org' },
-  { id: 'o11', name: 'Laboratorium Keamanan Informasi', unit: 'Laboratorium Kampus', contact: 'labsec@kampus.ac.id' },
+  { id: 'o01', name: 'Garuda Developer Community', unit: 'Community', contact: 'panitia@garudahack.id' },
+  { id: 'o02', name: 'Indonesian Student Business Forum', unit: 'Student organization', contact: 'ibc@fbmi.or.id' },
+  { id: 'o03', name: 'Indonesian Digital Designers Association', unit: 'Association', contact: 'sprint@addi.id' },
+  { id: 'o04', name: 'Andalas University Policy Studies Center', unit: 'University', contact: 'pkk@unand.ac.id' },
+  { id: 'o05', name: 'Student Debate League', unit: 'Community', contact: 'halo@ligadebat.id' },
+  { id: 'o06', name: 'Nusantara Campus Research Ministry', unit: 'Student council', contact: 'lkti@kampusnusantara.id' },
+  { id: 'o07', name: 'Pusat Prestasi Nasional', unit: 'Government', contact: 'info@puspresnas.go.id' },
+  { id: 'o08', name: 'Indonesia Data Community', unit: 'Community', contact: 'sprint@idc.or.id' },
+  { id: 'o09', name: 'BINUS Student Tech Club', unit: 'Campus club', contact: 'binushack@binus.ac.id' },
+  { id: 'o10', name: 'ASEAN Cyber Security Council', unit: 'International', contact: 'cup@aseancyber.org' },
+  { id: 'o11', name: 'Information Security Lab', unit: 'Campus lab', contact: 'labsec@kampus.ac.id' },
 ];
 
 /** Penyelenggara yang "login" di Portal Penyelenggara pada prototipe ini. */

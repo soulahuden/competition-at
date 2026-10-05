@@ -1,21 +1,21 @@
 export type CompetitionCategory =
   | 'IT'
-  | 'Bisnis'
-  | 'Desain'
-  | 'Esai'
-  | 'Sains'
-  | 'Robotika'
-  | 'Debat';
+  | 'Business'
+  | 'Design'
+  | 'Essay'
+  | 'Science'
+  | 'Robotics'
+  | 'Debate';
 
-export type CompetitionTier = 'Internal' | 'Regional' | 'Nasional' | 'Internasional';
+export type CompetitionTier = 'Internal' | 'Regional' | 'National' | 'International';
 
 export type CompetitionStatus = 'mendatang' | 'berjalan' | 'selesai' | 'moderasi';
 
 export type CampusBenefit =
-  | 'Bisa ajukan dana kampus'
-  | 'Dispensasi kuliah'
-  | 'Konversi SKS'
-  | 'Poin SKKM';
+  | 'Campus funding'
+  | 'Class dispensation'
+  | 'Credit transfer'
+  | 'SKKM points';
 
 export interface TimelineItem {
   label: string;
@@ -72,7 +72,7 @@ export interface HistoryRecord {
   tier: CompetitionTier;
   teamName: string;
   year: number;
-  outcome: 'Juara 1' | 'Juara 2' | 'Juara 3' | 'Finalis' | 'Tidak lolos' | 'Mundur';
+  outcome: '1st place' | '2nd place' | '3rd place' | 'Finalist' | 'Eliminated' | 'Withdrew';
   points: number;
 }
 
@@ -137,7 +137,7 @@ export interface Team {
   createdAt: string;
   paid: boolean;
   peerReviewDone: boolean;
-  result?: 'Juara 1' | 'Juara 2' | 'Juara 3' | 'Finalis' | 'Tidak lolos';
+  result?: '1st place' | '2nd place' | '3rd place' | 'Finalist' | 'Eliminated';
 }
 
 export interface Recruitment {

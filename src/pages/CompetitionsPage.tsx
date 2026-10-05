@@ -41,9 +41,9 @@ export default function CompetitionsPage() {
   }, [competitions, tab, category, tier, fee, query]);
 
   const tabs: TabItem<TabValue>[] = [
-    { value: 'mendatang', label: 'Mendatang', count: competitions.filter((c) => c.status === 'mendatang').length },
-    { value: 'berjalan', label: 'Sedang Berjalan', count: competitions.filter((c) => c.status === 'berjalan').length },
-    { value: 'selesai', label: 'Selesai', count: competitions.filter((c) => c.status === 'selesai').length },
+    { value: 'mendatang', label: 'Upcoming', count: competitions.filter((c) => c.status === 'mendatang').length },
+    { value: 'berjalan', label: 'In progress', count: competitions.filter((c) => c.status === 'berjalan').length },
+    { value: 'selesai', label: 'Finished', count: competitions.filter((c) => c.status === 'selesai').length },
   ];
 
   const resetFilters = () => {
@@ -58,11 +58,10 @@ export default function CompetitionsPage() {
   return (
     <div className="space-y-6">
       <SectionTitle
-        title="Lomba"
-        description="Katalog lomba kampus dan luar kampus yang bisa kamu ikuti bersama tim."
+        title="Competitions"
         action={
           <Button onClick={() => setAddOpen(true)}>
-            <Plus size={16} /> Tambah Lomba
+            <Plus size={16} /> Add competition
           </Button>
         }
       />
@@ -72,17 +71,14 @@ export default function CompetitionsPage() {
           <Clock size={18} className="shrink-0" />
           <p>{toast}</p>
           <button onClick={() => setToast(null)} className="ml-auto text-xs underline">
-            Tutup
+            Dismiss
           </button>
         </div>
       )}
 
       {pendingModeration.length > 0 && (
-        <section aria-label="Lomba menunggu moderasi" className="glass p-5">
-          <h2 className="font-display text-base font-semibold text-white">Menunggu moderasi</h2>
-          <p className="mt-1 text-sm text-ink-muted">
-            Lomba berikut sudah kamu kirim dan sedang diperiksa tim COM@T.
-          </p>
+        <section aria-label="Competitions under review" className="glass p-5">
+          <h2 className="font-display text-base font-semibold text-white">Under review</h2>
           <ul className="mt-3 space-y-2">
             {pendingModeration.map((c) => (
               <li
@@ -95,14 +91,14 @@ export default function CompetitionsPage() {
                     {c.organizer} · {c.category} · {c.tier}
                   </p>
                 </div>
-                <Badge tone="amber">Menunggu moderasi</Badge>
+                <Badge tone="amber">Under review</Badge>
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      <Tabs items={tabs} value={tab} onChange={setTab} ariaLabel="Status lomba" />
+      <Tabs items={tabs} value={tab} onChange={setTab} ariaLabel="Competition status" />
 
       <div className="glass flex flex-wrap items-end gap-3 p-4">
         <div className="min-w-[12rem] flex-[2]">
@@ -110,7 +106,7 @@ export default function CompetitionsPage() {
             htmlFor="cari-lomba"
             className="mb-1 block text-xs font-medium uppercase tracking-wide text-ink-faint"
           >
-            Cari
+            Search
           </label>
           <div className="relative">
             <Search
@@ -121,18 +117,18 @@ export default function CompetitionsPage() {
               id="cari-lomba"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Nama lomba atau penyelenggara"
+              placeholder="Competition or organizer"
               className="w-full rounded-lg border border-white/15 bg-space-900/70 py-2 pl-9 pr-3 text-sm text-ink placeholder:text-ink-faint focus:border-cyan/60 focus:outline-none focus:ring-2 focus:ring-cyan/30"
             />
           </div>
         </div>
 
         <FilterSelect
-          label="Kategori"
+          label="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value as CompetitionCategory | 'semua')}
         >
-          <option value="semua">Semua kategori</option>
+          <option value="semua">All categories</option>
           {categories.map((c) => (
             <option key={c} value={c}>
               {c}
@@ -145,7 +141,7 @@ export default function CompetitionsPage() {
           value={tier}
           onChange={(e) => setTier(e.target.value as CompetitionTier | 'semua')}
         >
-          <option value="semua">Semua tier</option>
+          <option value="semua">All tiers</option>
           {tiers.map((t) => (
             <option key={t} value={t}>
               {t}
@@ -154,13 +150,13 @@ export default function CompetitionsPage() {
         </FilterSelect>
 
         <FilterSelect
-          label="Biaya"
+          label="Fee"
           value={fee}
           onChange={(e) => setFee(e.target.value as 'semua' | 'gratis' | 'berbayar')}
         >
-          <option value="semua">Semua</option>
-          <option value="gratis">Gratis</option>
-          <option value="berbayar">Berbayar</option>
+          <option value="semua">Any</option>
+          <option value="gratis">Free</option>
+          <option value="berbayar">Paid</option>
         </FilterSelect>
 
         {hasActiveFilter && (
@@ -179,8 +175,7 @@ export default function CompetitionsPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={<Trophy size={22} />}
-          title="Tidak ada lomba yang cocok"
-          description="Coba longgarkan filter kategori, tier, atau biaya."
+          title="No competitions match"
           action={
             hasActiveFilter ? (
               <Button variant="outline" size="sm" onClick={resetFilters}>
@@ -201,7 +196,7 @@ export default function CompetitionsPage() {
         open={addOpen}
         onClose={() => setAddOpen(false)}
         onCreated={(name) =>
-          setToast(`"${name}" berhasil dikirim dan berstatus "Menunggu moderasi".`)
+          setToast(`"${name}" was submitted and is under review.`)
         }
       />
     </div>

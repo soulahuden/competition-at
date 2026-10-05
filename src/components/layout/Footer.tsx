@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <Logo size="sm" />
         <p className="text-xs text-ink-faint">
-          Prototipe frontend · Seluruh data pada halaman ini adalah data contoh.
+          Prototype. All data here is sample data.
         </p>
       </div>
     </footer>

@@ -15,8 +15,8 @@ export function RatingScale({
   question,
   value,
   onChange,
-  lowLabel = 'Sangat kurang',
-  highLabel = 'Sangat baik',
+  lowLabel = 'Very poor',
+  highLabel = 'Excellent',
 }: RatingScaleProps) {
   return (
     <fieldset>

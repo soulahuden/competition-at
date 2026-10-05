@@ -32,7 +32,7 @@ export async function getOpenRecruitments(): Promise<RecruitmentView[]> {
         role: slot.role,
         skills: slot.skills,
         captainId: team.captainId,
-        captainName: captain?.name ?? 'Kapten',
+        captainName: captain?.name ?? 'Captain',
         memberCount: team.members.length,
         teamSizeMax: competition.teamSizeMax,
       } as RecruitmentView;
@@ -70,9 +70,9 @@ export async function applyToTeam(input: ApplyInput): Promise<Application> {
     db.notifications.unshift({
       id: uid('n'),
       kind: 'lamaran',
-      title: `Lamaran baru untuk ${team.name}`,
-      body: `${applicant?.name ?? 'Seseorang'} melamar slot ${
-        team.openSlots.find((s) => s.id === input.slotId)?.role ?? 'tim'
+      title: `New application for ${team.name}`,
+      body: `${applicant?.name ?? 'Someone'} applied for ${
+        team.openSlots.find((s) => s.id === input.slotId)?.role ?? 'an open slot'
       }.`,
       createdAt: TODAY_ISO,
       read: false,
@@ -114,11 +114,11 @@ export async function getRecommendedPeople(studentId: string): Promise<PersonRec
 
       let connectionNote: string | undefined;
       if (mutual > 0) {
-        connectionNote = `Pernah satu tim dengan ${mutual} orang yang pernah setim denganmu`;
+        connectionNote = `Has teamed up with ${mutual} of your past teammates`;
       } else if (myTeammateIds.has(s.id)) {
-        connectionNote = 'Pernah satu tim denganmu';
+        connectionNote = 'You have been on a team together';
       } else if (interestOverlap > 0) {
-        connectionNote = `Minat lomba yang sama (${s.interests.filter((i) => me.interests.includes(i)).join(', ')})`;
+        connectionNote = `Same interests (${s.interests.filter((i) => me.interests.includes(i)).join(', ')})`;
       }
 
       const score =
@@ -153,8 +153,8 @@ export async function invitePerson(
   db.notifications.unshift({
     id: uid('n'),
     kind: 'tim',
-    title: `Undangan tim ${team.name}`,
-    body: `Kamu diundang bergabung sebagai ${role}.`,
+    title: `Invite from ${team.name}`,
+    body: `You were invited to join as ${role}.`,
     createdAt: TODAY_ISO,
     read: false,
     href: '/tim',

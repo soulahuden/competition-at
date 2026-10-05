@@ -43,21 +43,21 @@ export function CompetitionCard({ competition }: { competition: Competition }) {
         <dl className="mt-4 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
           <div className="flex items-center gap-2 text-ink-muted">
             <CalendarClock size={15} className="shrink-0 text-cyan-soft" />
-            <dt className="sr-only">Deadline pendaftaran</dt>
+            <dt className="sr-only">Registration deadline</dt>
             <dd>{deadlineLabel(c.registrationDeadline)}</dd>
           </div>
           <div className="flex items-center gap-2 text-ink-muted">
             <Users size={15} className="shrink-0 text-cyan-soft" />
-            <dt className="sr-only">Ukuran tim</dt>
+            <dt className="sr-only">Team size</dt>
             <dd>
               {c.teamSizeMin === c.teamSizeMax
-                ? `${c.teamSizeMax} orang`
-                : `${c.teamSizeMin}–${c.teamSizeMax} orang`}
+                ? `${c.teamSizeMax} people`
+                : `${c.teamSizeMin}-${c.teamSizeMax} people`}
             </dd>
           </div>
           <div className="flex items-center gap-2 text-ink-muted">
             <Coins size={15} className="shrink-0 text-cyan-soft" />
-            <dt className="sr-only">Biaya</dt>
+            <dt className="sr-only">Fee</dt>
             <dd>{formatRupiah(c.fee)}</dd>
           </div>
         </dl>

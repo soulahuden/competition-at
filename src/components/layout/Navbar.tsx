@@ -9,9 +9,9 @@ import { cn } from '@/lib/cn';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard' },
-  { to: '/lomba', label: 'Lomba' },
-  { to: '/cari-tim', label: 'Cari Tim' },
-  { to: '/tim', label: 'Tim Saya' },
+  { to: '/lomba', label: 'Competitions' },
+  { to: '/cari-tim', label: 'Find a Team' },
+  { to: '/tim', label: 'My Teams' },
   { to: '/leaderboard', label: 'Leaderboard' },
 ];
 
@@ -35,14 +35,14 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex items-center gap-6">
           <Logo to="/dashboard" />
-          <nav aria-label="Navigasi utama" className="hidden items-center gap-1 lg:flex">
+          <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} className={linkClass}>
                 {item.label}
               </NavLink>
             ))}
             <NavLink to={`/profil/${currentUserId}`} className={linkClass}>
-              Profil
+              Profile
             </NavLink>
           </nav>
         </div>
@@ -54,7 +54,7 @@ export function Navbar() {
           </div>
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            aria-label={mobileOpen ? 'Tutup menu' : 'Buka menu'}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
             className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-ink-muted transition hover:text-white lg:hidden"
           >
@@ -65,18 +65,18 @@ export function Navbar() {
 
       {mobileOpen && (
         <div className="border-t border-white/10 bg-space-950/95 px-4 pb-4 pt-2 lg:hidden">
-          <nav aria-label="Navigasi mobile" className="flex flex-col gap-1">
+          <nav aria-label="Mobile navigation" className="flex flex-col gap-1">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} className={linkClass}>
                 {item.label}
               </NavLink>
             ))}
             <NavLink to={`/profil/${currentUserId}`} className={linkClass}>
-              Profil
+              Profile
             </NavLink>
             <NavLink to="/penyelenggara" className={linkClass}>
               <span className="inline-flex items-center gap-2">
-                <Building2 size={15} /> Portal Penyelenggara
+                <Building2 size={15} /> Organizer portal
               </span>
             </NavLink>
           </nav>

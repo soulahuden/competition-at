@@ -11,9 +11,9 @@ interface PeerReviewModalProps {
 }
 
 const QUESTIONS = [
-  { key: 'contribution', text: 'Apakah rekan ini berkontribusi sesuai perannya?' },
-  { key: 'responsiveness', text: 'Apakah rekan ini responsif saat dihubungi?' },
-  { key: 'persistence', text: 'Apakah rekan ini bertahan sampai lomba selesai?' },
+  { key: 'contribution', text: 'Did they pull their weight in their role?' },
+  { key: 'responsiveness', text: 'Did they reply when you reached out?' },
+  { key: 'persistence', text: 'Did they stick around until the end?' },
 ] as const;
 
 export function PeerReviewModal({ open, onClose, team }: PeerReviewModalProps) {
@@ -48,15 +48,15 @@ export function PeerReviewModal({ open, onClose, team }: PeerReviewModalProps) {
       open={open}
       onClose={onClose}
       title="Peer Review"
-      description="Jawaban bersifat anonim bagi rekan tim dan hanya dipakai untuk menghitung skor reliabilitas."
+      description="Anonymous. Only used for reliability scores."
       size="lg"
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>
-            Nanti saja
+            Not now
           </Button>
           <Button onClick={() => void handleSubmit()} disabled={!complete || submitting}>
-            {submitting ? 'Mengirim…' : 'Kirim peer review'}
+            {submitting ? 'Sending…' : 'Submit review'}
           </Button>
         </>
       }
@@ -101,8 +101,7 @@ export function PeerReviewModal({ open, onClose, team }: PeerReviewModalProps) {
         })}
 
         <p className="text-xs text-ink-faint">
-          Tidak ada kolom komentar bebas. Penilaian hanya berupa skala 1–5 agar umpan balik tetap
-          terukur dan tidak menyerang pribadi.
+          Ratings only, 1 to 5. No comment box, so feedback stays fair and never gets personal.
         </p>
       </div>
     </Modal>

@@ -15,14 +15,14 @@ export function reliabilityView(student: Student): ReliabilityView {
     return {
       hasEnoughData: false,
       score: 0,
-      label: 'Belum cukup data',
+      label: 'Not enough data',
       tone: 'unknown',
     };
   }
 
   const score = student.reliability;
   const tone = score >= 85 ? 'positive' : score >= 70 ? 'neutral' : 'warning';
-  const label = score >= 85 ? 'Sangat andal' : score >= 70 ? 'Cukup andal' : 'Perlu diperhatikan';
+  const label = score >= 85 ? 'Very reliable' : score >= 70 ? 'Reliable' : 'Needs attention';
 
   return { hasEnoughData: true, score, label, tone };
 }

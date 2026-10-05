@@ -60,20 +60,19 @@ export default function OrganizerPage() {
   const totalNet = managed.reduce((sum, m) => sum + m.netRevenue, 0);
 
   const tabs: TabItem<TabValue>[] = [
-    { value: 'ringkasan', label: 'Lomba dikelola', count: managed.length },
-    { value: 'pendaftar', label: 'Kelola pendaftar', count: totalTeams },
-    { value: 'hasil', label: 'Input hasil' },
+    { value: 'ringkasan', label: 'Competitions', count: managed.length },
+    { value: 'pendaftar', label: 'Registrants', count: totalTeams },
+    { value: 'hasil', label: 'Results' },
     { value: 'featured', label: 'Featured Listing' },
   ];
 
   return (
     <div className="space-y-6">
       <SectionTitle
-        title="Portal Penyelenggara"
-        description="Kelola lomba, pendaftar, hasil, dan promosi listing."
+        title="Organizer Portal"
         action={
           <Button onClick={() => setAddOpen(true)}>
-            <Plus size={16} /> Buat lomba baru
+            <Plus size={16} /> New competition
           </Button>
         }
       />
@@ -84,32 +83,32 @@ export default function OrganizerPage() {
         </span>
         <div>
           <p className="font-display font-semibold text-white">BINUS Student Tech Club</p>
-          <p className="text-xs text-ink-muted">Akun penyelenggara (mode demo)</p>
+          <p className="text-xs text-ink-muted">Organizer account (demo)</p>
         </div>
       </div>
 
-      <section aria-label="Ringkasan penyelenggara" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Lomba dikelola" value={managed.length} icon={<Trophy size={16} />} tone="cyan" />
-        <StatCard label="Tim terdaftar" value={totalTeams} icon={<Users size={16} />} tone="violet" />
+      <section aria-label="Organizer summary" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard label="Competitions" value={managed.length} icon={<Trophy size={16} />} tone="cyan" />
+        <StatCard label="Registered teams" value={totalTeams} icon={<Users size={16} />} tone="violet" />
         <StatCard
-          label="Dana terkumpul"
+          label="Collected"
           value={formatRupiah(totalGross)}
-          sub={`Fee platform ${Math.round(platformFeeRate * 100)}%: ${formatRupiah(totalFee)}`}
+          sub={`Platform fee ${Math.round(platformFeeRate * 100)}%: ${formatRupiah(totalFee)}`}
           icon={<Banknote size={16} />}
           tone="amber"
         />
-        <StatCard label="Diterima bersih" value={formatRupiah(totalNet)} tone="cyan" />
+        <StatCard label="Net received" value={formatRupiah(totalNet)} tone="cyan" />
       </section>
 
-      <Tabs items={tabs} value={tab} onChange={setTab} ariaLabel="Menu penyelenggara" />
+      <Tabs items={tabs} value={tab} onChange={setTab} ariaLabel="Organizer sections" />
 
       {loading ? (
         <div className="glass h-72 animate-pulse" />
       ) : managed.length === 0 ? (
         <EmptyState
           icon={<ClipboardList size={22} />}
-          title="Belum ada lomba yang dikelola"
-          action={<Button onClick={() => setAddOpen(true)}>Buat lomba baru</Button>}
+          title="No competitions yet"
+          action={<Button onClick={() => setAddOpen(true)}>New competition</Button>}
         />
       ) : (
         <>
@@ -126,7 +125,7 @@ export default function OrganizerPage() {
                         {m.competition.name}
                       </Link>
                       <p className="mt-1 text-xs text-ink-muted">
-                        {formatDate(m.competition.startDate)} – {formatDate(m.competition.endDate)}
+                        {formatDate(m.competition.startDate)} to {formatDate(m.competition.endDate)}
                       </p>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -143,23 +142,23 @@ export default function OrganizerPage() {
 
                   <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-sm sm:grid-cols-4">
                     <div>
-                      <dt className="text-xs text-ink-faint">Tim terdaftar</dt>
+                      <dt className="text-xs text-ink-faint">Teams</dt>
                       <dd className="mt-0.5 font-display font-semibold text-ink">
                         {m.registeredTeams}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-ink-faint">Sudah bayar</dt>
+                      <dt className="text-xs text-ink-faint">Paid</dt>
                       <dd className="mt-0.5 font-display font-semibold text-ink">{m.paidTeams}</dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-ink-faint">Dana terkumpul</dt>
+                      <dt className="text-xs text-ink-faint">Collected</dt>
                       <dd className="mt-0.5 font-display font-semibold text-amber">
                         {formatRupiah(m.grossRevenue)}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-ink-faint">Setelah fee platform</dt>
+                      <dt className="text-xs text-ink-faint">After platform fee</dt>
                       <dd className="mt-0.5 font-display font-semibold text-ink">
                         {formatRupiah(m.netRevenue)}
                       </dd>
@@ -178,7 +177,7 @@ export default function OrganizerPage() {
                     {m.competition.name}
                   </h2>
                   {m.teams.length === 0 ? (
-                    <p className="mt-2 text-sm text-ink-muted">Belum ada tim yang mendaftar.</p>
+                    <p className="mt-2 text-sm text-ink-muted">No teams have registered yet.</p>
                   ) : (
                     <ul className="mt-4 space-y-2">
                       {m.teams.map((team) => (
@@ -189,8 +188,8 @@ export default function OrganizerPage() {
                           <div className="min-w-0">
                             <p className="font-medium text-white">{team.name}</p>
                             <p className="mt-0.5 text-xs text-ink-muted">
-                              {team.members.length} anggota ·{' '}
-                              {team.members.filter((x) => x.confirmed).length} terkonfirmasi
+                              {team.members.length} members ·{' '}
+                              {team.members.filter((x) => x.confirmed).length} confirmed
                             </p>
                             <div className="mt-2 flex -space-x-2">
                               {team.members.map((mem) => {
@@ -211,7 +210,7 @@ export default function OrganizerPage() {
                               {teamStatusLabel[team.status]}
                             </Badge>
                             <Badge tone={team.paid ? 'success' : 'amber'}>
-                              {team.paid ? 'Lunas' : 'Belum bayar'}
+                              {team.paid ? 'Paid' : 'Unpaid'}
                             </Badge>
                           </div>
                         </li>
@@ -226,8 +225,8 @@ export default function OrganizerPage() {
           {tab === 'hasil' && (
             <div className="space-y-4">
               <p className="text-sm text-ink-muted">
-                Mengumumkan hasil akan menutup lomba, mengunci status tim, membuka peer review, dan
-                menambahkan poin ke leaderboard.
+                Announcing results closes the competition, locks every team, opens peer review, and
+                adds points to the leaderboard.
               </p>
               {managed.map((m) => (
                 <div
@@ -237,20 +236,20 @@ export default function OrganizerPage() {
                   <div className="min-w-0">
                     <p className="font-medium text-white">{m.competition.name}</p>
                     <p className="mt-0.5 text-xs text-ink-muted">
-                      {m.registeredTeams} tim terdaftar · Tier {m.competition.tier}
+                      {m.registeredTeams} {m.registeredTeams === 1 ? 'team' : 'teams'} · {m.competition.tier}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge tone={tierTone[m.competition.tier]}>{m.competition.tier}</Badge>
                     {m.competition.status === 'selesai' ? (
-                      <Badge tone="neutral">Hasil sudah diumumkan</Badge>
+                      <Badge tone="neutral">Results announced</Badge>
                     ) : (
                       <Button
                         size="sm"
                         disabled={m.registeredTeams === 0}
                         onClick={() => setResultTarget(m)}
                       >
-                        <Trophy size={15} /> Input hasil
+                        <Trophy size={15} /> Enter results
                       </Button>
                     )}
                   </div>
@@ -266,12 +265,11 @@ export default function OrganizerPage() {
                   <Sparkles size={18} /> Featured Listing
                 </h2>
                 <p className="mt-2 text-sm text-ink-muted">
-                  Lomba tampil di urutan teratas katalog dan mendapat badge "Featured" selama 30
-                  hari.
+                  Pinned to the top of the catalog with a "Featured" badge.
                 </p>
                 <p className="mt-3 font-display text-2xl font-bold text-amber">
                   {formatRupiah(featuredListingPrice)}
-                  <span className="ml-2 text-sm font-normal text-ink-muted">/ 30 hari</span>
+                  <span className="ml-2 text-sm font-normal text-ink-muted">/ 30 days</span>
                 </p>
               </div>
 
@@ -284,8 +282,8 @@ export default function OrganizerPage() {
                     <p className="font-medium text-white">{m.competition.name}</p>
                     <p className="mt-0.5 text-xs text-ink-muted">
                       {m.competition.featured
-                        ? 'Sedang tampil sebagai Featured'
-                        : 'Listing standar'}
+                        ? 'Featured right now'
+                        : 'Standard listing'}
                     </p>
                   </div>
                   {m.competition.featured ? (
@@ -294,7 +292,7 @@ export default function OrganizerPage() {
                       variant="outline"
                       onClick={() => void setFeatured(m.competition.id, false)}
                     >
-                      Hentikan Featured
+                      Stop featuring
                     </Button>
                   ) : (
                     <Button size="sm" variant="secondary" onClick={() => setFeaturedTarget(m)}>
@@ -325,13 +323,13 @@ export default function OrganizerPage() {
         <Modal
           open
           onClose={() => setFeaturedTarget(null)}
-          title="Upgrade ke Featured Listing"
+          title="Upgrade to Featured Listing"
           description={featuredTarget.competition.name}
           size="sm"
           footer={
             <>
               <Button variant="ghost" onClick={() => setFeaturedTarget(null)}>
-                Batal
+                Cancel
               </Button>
               <Button
                 onClick={async () => {
@@ -339,18 +337,18 @@ export default function OrganizerPage() {
                   setFeaturedTarget(null);
                 }}
               >
-                Bayar {formatRupiah(featuredListingPrice)}
+                Pay {formatRupiah(featuredListingPrice)}
               </Button>
             </>
           }
         >
-          <ul className="space-y-2 text-sm text-ink-muted">
-            <li>· Tampil di urutan teratas katalog lomba selama 30 hari</li>
-            <li>· Badge "Featured" pada kartu lomba</li>
-            <li>· Muncul di rekomendasi dashboard mahasiswa</li>
+          <ul className="list-disc space-y-2 pl-4 text-sm text-ink-muted marker:text-ink-faint">
+            <li>Top of the competition catalog for 30 days</li>
+            <li>A "Featured" badge on the competition card</li>
+            <li>Shown in student dashboard suggestions</li>
           </ul>
           <p className="mt-4 rounded-xl border border-amber/25 bg-amber/10 p-3 text-xs text-amber-soft">
-            Harga mock — prototipe ini tidak memproses pembayaran sungguhan.
+            Sample price. This prototype doesn't take real payments.
           </p>
         </Modal>
       )}
@@ -376,12 +374,12 @@ function ResultModal({ managed, onClose, onSubmit }: ResultModalProps) {
     <Modal
       open
       onClose={onClose}
-      title="Input hasil lomba"
+      title="Enter results"
       description={managed.competition.name}
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>
-            Batal
+            Cancel
           </Button>
           <Button
             disabled={submitting}
@@ -391,15 +389,14 @@ function ResultModal({ managed, onClose, onSubmit }: ResultModalProps) {
               setSubmitting(false);
             }}
           >
-            {submitting ? 'Menyimpan…' : 'Umumkan hasil'}
+            {submitting ? 'Saving…' : 'Announce results'}
           </Button>
         </>
       }
     >
       <div className="space-y-4">
         <p className="text-sm text-ink-muted">
-          Tim yang tidak diberi peringkat akan tercatat sebagai "Tidak lolos" dan tetap mendapat
-          poin keaktifan.
+          Teams without a place are recorded as "Eliminated" and still get activity points.
         </p>
 
         {managed.teams.map((team) => (
@@ -411,11 +408,11 @@ function ResultModal({ managed, onClose, onSubmit }: ResultModalProps) {
               setAssignments((prev) => ({ ...prev, [team.id]: e.target.value }))
             }
           >
-            <option value="">Tidak lolos</option>
-            <option value="1">Juara 1</option>
-            <option value="2">Juara 2</option>
-            <option value="3">Juara 3</option>
-            <option value="0">Finalis</option>
+            <option value="">Eliminated</option>
+            <option value="1">1st place</option>
+            <option value="2">2nd place</option>
+            <option value="3">3rd place</option>
+            <option value="0">Finalist</option>
           </SelectField>
         ))}
 

@@ -1,10 +1,10 @@
-const dateFormatter = new Intl.DateTimeFormat('id-ID', {
+const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
 });
 
-const shortDateFormatter = new Intl.DateTimeFormat('id-ID', {
+const shortDateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
   month: 'short',
 });
@@ -18,16 +18,12 @@ export function formatShortDate(iso: string): string {
 }
 
 export function formatRupiah(value: number): string {
-  if (value === 0) return 'Gratis';
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0,
-  }).format(value);
+  if (value === 0) return 'Free';
+  return `Rp ${new Intl.NumberFormat('en-US').format(value)}`;
 }
 
 export function formatNumber(value: number): string {
-  return new Intl.NumberFormat('id-ID').format(value);
+  return new Intl.NumberFormat('en-US').format(value);
 }
 
 /** Tanggal acuan prototipe. Diambil terpusat supaya mudah diganti saat integrasi API. */
@@ -41,19 +37,19 @@ export function daysUntil(iso: string): number {
 
 export function deadlineLabel(iso: string): string {
   const days = daysUntil(iso);
-  if (days < 0) return 'Pendaftaran ditutup';
-  if (days === 0) return 'Ditutup hari ini';
-  if (days === 1) return 'Tinggal 1 hari';
-  if (days <= 14) return `Tinggal ${days} hari`;
-  return `Ditutup ${formatDate(iso)}`;
+  if (days < 0) return 'Registration closed';
+  if (days === 0) return 'Closes today';
+  if (days === 1) return '1 day left';
+  if (days <= 14) return `${days} days left`;
+  return `Closes ${formatDate(iso)}`;
 }
 
 export function relativeTime(iso: string): string {
   const days = Math.round((TODAY.getTime() - new Date(iso).getTime()) / (1000 * 60 * 60 * 24));
-  if (days <= 0) return 'Hari ini';
-  if (days === 1) return 'Kemarin';
-  if (days < 7) return `${days} hari lalu`;
-  if (days < 30) return `${Math.floor(days / 7)} minggu lalu`;
+  if (days <= 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
   return formatShortDate(iso);
 }
 

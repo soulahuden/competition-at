@@ -61,8 +61,8 @@ export async function createTeam(input: NewTeamInput): Promise<Team> {
       id: uid('r'),
       teamId: team.id,
       slotId: slot.id,
-      title: `Butuh 1 ${slot.role} untuk ${competition?.name ?? 'lomba'}`,
-      commitment: slot.note?.trim() || 'Komitmen menyesuaikan jadwal lomba',
+      title: `Looking for a ${slot.role} for ${competition?.name ?? 'a competition'}`,
+      commitment: slot.note?.trim() || 'Follows the competition schedule',
       deadline: team.rosterLockDate,
       createdAt: TODAY_ISO,
     });
@@ -72,8 +72,8 @@ export async function createTeam(input: NewTeamInput): Promise<Team> {
     db.notifications.unshift({
       id: uid('n'),
       kind: 'tim',
-      title: `Undangan tim ${team.name}`,
-      body: `Kamu diundang sebagai ${invited.role} untuk ${competition?.name ?? 'lomba'}.`,
+      title: `Invite from ${team.name}`,
+      body: `You were invited as ${invited.role} for ${competition?.name ?? 'a competition'}.`,
       createdAt: TODAY_ISO,
       read: false,
       href: '/tim',
@@ -96,8 +96,8 @@ export async function confirmMember(teamId: string, studentId: string): Promise<
     db.notifications.unshift({
       id: uid('n'),
       kind: 'tim',
-      title: `Tim ${team.name} terkonfirmasi`,
-      body: 'Semua anggota sudah mengonfirmasi. Tim resmi terdaftar.',
+      title: `${team.name} is confirmed`,
+      body: 'Everyone confirmed. The team is officially registered.',
       createdAt: TODAY_ISO,
       read: false,
       href: '/tim',
@@ -122,8 +122,8 @@ export async function payRegistration(teamId: string, method: string): Promise<T
   db.notifications.unshift({
     id: uid('n'),
     kind: 'pembayaran',
-    title: 'Pembayaran berhasil',
-    body: `Biaya pendaftaran tim ${team.name} lunas via ${method}.`,
+    title: 'Payment received',
+    body: `${team.name}\'s registration fee was paid via ${method}.`,
     createdAt: TODAY_ISO,
     read: false,
     href: '/tim',
@@ -155,7 +155,7 @@ export async function acceptApplication(applicationId: string): Promise<Team | u
   if (!team.members.some((m) => m.studentId === application.applicantId)) {
     team.members.push({
       studentId: application.applicantId,
-      role: slot?.role ?? 'Anggota',
+      role: slot?.role ?? 'Member',
       confirmed: true,
       isCaptain: false,
     });
@@ -171,8 +171,8 @@ export async function acceptApplication(applicationId: string): Promise<Team | u
       db.notifications.unshift({
         id: uid('n'),
         kind: 'lamaran',
-        title: 'Slot sudah terisi',
-        body: `Slot ${slot?.role ?? 'tim'} di tim ${team.name} sudah diisi kandidat lain.`,
+        title: 'Slot filled',
+        body: `The ${slot?.role ?? 'open'} slot on ${team.name} went to another candidate.`,
         createdAt: TODAY_ISO,
         read: false,
         href: '/cari-tim',
@@ -184,8 +184,8 @@ export async function acceptApplication(applicationId: string): Promise<Team | u
   db.notifications.unshift({
     id: uid('n'),
     kind: 'lamaran',
-    title: 'Lamaran diterima',
-    body: `Kamu resmi bergabung dengan tim ${team.name}.`,
+    title: 'Application accepted',
+    body: `You\'re now on ${team.name}.`,
     createdAt: TODAY_ISO,
     read: false,
     href: '/tim',
@@ -204,8 +204,8 @@ export async function rejectApplication(applicationId: string): Promise<void> {
   db.notifications.unshift({
     id: uid('n'),
     kind: 'lamaran',
-    title: 'Lamaran belum cocok',
-    body: `Kapten tim ${team?.name ?? ''} belum bisa menerima lamaranmu kali ini.`,
+    title: 'Application not accepted',
+    body: `The ${team?.name ?? ''} captain passed on your application this time.`,
     createdAt: TODAY_ISO,
     read: false,
     href: '/cari-tim',

@@ -28,7 +28,7 @@ export function NotificationBell() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label={`Notifikasi${unreadCount > 0 ? `, ${unreadCount} belum dibaca` : ''}`}
+        aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
         aria-expanded={open}
         className="relative rounded-xl border border-white/10 bg-white/5 p-2.5 text-ink-muted transition hover:border-cyan/40 hover:text-white"
       >
@@ -43,20 +43,20 @@ export function NotificationBell() {
       {open && (
         <div className="glass-strong absolute right-0 z-40 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl">
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-            <p className="font-display text-sm font-semibold text-white">Notifikasi</p>
+            <p className="font-display text-sm font-semibold text-white">Notifications</p>
             {unreadCount > 0 && (
               <button
                 onClick={() => void markAllRead()}
                 className="inline-flex items-center gap-1.5 text-xs text-cyan-soft transition hover:text-white"
               >
-                <CheckCheck size={14} /> Tandai dibaca
+                <CheckCheck size={14} /> Mark all read
               </button>
             )}
           </div>
           <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="p-4">
-                <EmptyState title="Belum ada notifikasi" />
+                <EmptyState title="No notifications yet" />
               </div>
             ) : (
               notifications.slice(0, 8).map((n) => (
